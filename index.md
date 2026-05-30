@@ -1,3 +1,8 @@
+---
+title: S.U.A.S. Veteran Crisis QRF
+description: Shut Up And Serve. A 501(c)(3) nonprofit combating veteran isolation through community, peer support, and shared mission.
+---
+
 # S.U.A.S. Veteran Crisis QRF
 
 **Shut Up And Serve** — Veterans Crisis Quick Reaction Force
@@ -68,9 +73,14 @@ You are not alone. Reach out.
 
 ## About the Organization
 
-S.U.A.S. Veteran Crisis QRF is a registered charitable nonprofit headquartered in Los Altos, California. Founded July 2022 by Jacob Silver.
+S.U.A.S. Veteran Crisis QRF is an IRS-recognized **501(c)(3) public charity** headquartered in Los Altos, California. Founded July 2022 by Jacob Silver.
+
+Contributions are **fully tax-deductible** under IRC Section 170.
 
 - **EIN**: 88-3249428
+- **IRS Classification**: 501(c)(3) public charity under 170(b)(1)(A)(vi)
+- **Effective date of exemption**: July 8, 2022
+- [Official IRS Determination Letter (PDF)](./docs/IRS-Determination-Letter.pdf)
 - [Charity Navigator Profile](https://www.charitynavigator.org/ein/883249428)
 - [GuideStar Profile](https://www.guidestar.org/profile/88-3249428)
 

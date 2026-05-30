@@ -1,0 +1,30 @@
+title: S.U.A.S. Veteran Crisis QRF
+description: Shut Up And Serve. A 501(c)(3) nonprofit combating veteran isolation through community, peer support, and shared mission.
+url: https://s-u-a-s-veteran-crisis-qrf.github.io
+baseurl: /help
+
+theme: jekyll-theme-cayman
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+author:
+  name: S.U.A.S. Veteran Crisis QRF
+  email: jacobsilver@suasqrf.org
+
+twitter:
+  card: summary_large_image
+
+social:
+  name: S.U.A.S. Veteran Crisis QRF
+  links:
+    - https://www.facebook.com/suasqrf/
+    - https://www.facebook.com/groups/451663376808281/
+
+show_downloads: false
+
+exclude:
+  - AGENT_LINKS.md
+  - README.md
+  - .claude/
