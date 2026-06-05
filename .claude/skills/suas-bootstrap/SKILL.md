@@ -40,6 +40,7 @@ These come from `CLAUDE.md`. They are not suggestions:
 ## Available specialist agents
 
 - **`suas-tech`** (Sonnet) — dedicated tech-support subagent. Route SUAS tech problems (site down, email broken, domain DNS, Pages deploy) to it via the `Agent` tool with `subagent_type: "suas-tech"`.
+- **`suas-project-finisher`** (Sonnet) — director-level project finisher. Picks up the SUAS open-thread backlog (issues, failing deploys, unresolved PR comments, RUNBOOK gaps) and drives each to merged/closed/resolved. Invoke when Jacob says "finish this project", "handle the backlog", "drive open threads", or asks for autonomous follow-through.
 
 ## Available gstack slash commands
 

@@ -47,7 +47,11 @@ This file is auto-loaded by Claude Code in every session on this repo. It exists
 - `RUNBOOK.md` — step-by-step playbooks for common tech tasks
 - `AGENT_LINKS.md` — vetted Claude/MCP ecosystem links
 - `CONTRIBUTING.md` — onboarding for outside contributors
-- `.claude/agents/suas-tech.md` — specialized tech-support subagent
+- `dashboard.md` — director's quick-action surface (live at `/help/dashboard/`)
+- `.claude/agents/suas-tech.md` — specialized tech-support subagent (reactive)
+- `.claude/agents/suas-project-finisher.md` — director-level autonomous project finisher (proactive — drives backlog to done)
+- `.claude/skills/suas-bootstrap/SKILL.md` — auto-bootstrap skill loaded into every agent
+- `.claude/settings.json` + `.claude/hooks/suas-session-start.sh` — SessionStart hook (loads SUAS context + fetches gstack)
 
 ### Branch + PR conventions
 - Default branch: `main`
