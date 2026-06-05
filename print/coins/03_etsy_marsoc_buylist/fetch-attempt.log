@@ -1,0 +1,12 @@
+Attempted to reach marketplaces from the sandbox to do the curation:
+
+  etsy.com           → HTTP 403, x-deny-reason: host_not_allowed
+  cults3d.com        → HTTP 403, x-deny-reason: host_not_allowed
+  makerworld.com     → HTTP 403, x-deny-reason: host_not_allowed (see Path 2)
+  cgtrader.com       → not attempted (same denylist class)
+  thangs.com         → not attempted (same denylist class)
+
+Conclusion: no live marketplace data available. Rather than fabricate
+listing titles, sellers, and prices, this path ships a search playbook,
+vetting rubric, and a buylist template that Jacob fills in from a
+browser. See README.md for the honest framing at the top.
