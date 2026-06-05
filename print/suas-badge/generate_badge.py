@@ -476,6 +476,69 @@ def write_3mf(parts, path, project_name):
         z.writestr("Metadata/model_settings.config", model_settings)
 
 
+# ---------- SVG preview (exact top-down view, vector) ----------
+
+def _poly_pts(poly):
+    return " ".join(f"{x:.4f},{y:.4f}" for x, y in poly)
+
+
+def write_svg_top(spec, path):
+    """
+    spec = {
+      'disk_r', 'disk_color',
+      'ring_in', 'ring_out', 'ring_color',
+      'white_color', 'white_polys' (list of 2D polygons),
+      'gold_color', 'gold_polys' (list of 2D polygons),
+    }
+    """
+    half = spec['disk_r'] + 4
+    px_per_mm = 14
+    w = int(2 * half * px_per_mm)
+    r_in = spec['ring_in']
+    r_out = spec['ring_out']
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{w}" '
+        f'viewBox="{-half} {-half} {2*half} {2*half}">',
+        '  <rect x="' + f"{-half}" + '" y="' + f"{-half}" + '" '
+        f'width="{2*half}" height="{2*half}" fill="#cfd6df"/>',
+        '  <g transform="scale(1,-1)">',
+        # subtle drop shadow under the disk
+        f'    <circle cx="0.6" cy="-0.6" r="{spec["disk_r"]}" '
+        f'fill="#000" opacity="0.18"/>',
+        # 1. black base disk
+        f'    <circle cx="0" cy="0" r="{spec["disk_r"]}" '
+        f'fill="{spec["disk_color"]}"/>',
+        # 2. red ring as an annular path (even-odd fill)
+        f'    <path d="M {r_out} 0 A {r_out} {r_out} 0 1 1 {-r_out} 0 '
+        f'A {r_out} {r_out} 0 1 1 {r_out} 0 Z '
+        f'M {r_in} 0 A {r_in} {r_in} 0 1 0 {-r_in} 0 '
+        f'A {r_in} {r_in} 0 1 0 {r_in} 0 Z" '
+        f'fill="{spec["ring_color"]}" fill-rule="evenodd"/>',
+    ]
+    # 3. white skull + curved text
+    for poly in spec['white_polys']:
+        parts.append(
+            f'    <polygon points="{_poly_pts(poly)}" '
+            f'fill="{spec["white_color"]}"/>'
+        )
+    # 4. gold AR-15 (drawn last so it sits over the skull)
+    for poly in spec['gold_polys']:
+        parts.append(
+            f'    <polygon points="{_poly_pts(poly)}" '
+            f'fill="{spec["gold_color"]}"/>'
+        )
+    parts.append('  </g>')
+    # ruler + label outside the disk
+    parts.append(
+        f'  <text x="0" y="{half - 1.0}" font-size="2.4" font-family="monospace" '
+        f'text-anchor="middle" fill="#222">'
+        f'70 mm · 4-color · z=0–3.0 mm</text>'
+    )
+    parts.append('</svg>')
+    with open(path, "w") as f:
+        f.write("\n".join(parts))
+
+
 # ---------- Build the badge ----------
 
 def main():
@@ -534,6 +597,21 @@ def main():
     threemf = os.path.join(OUT, "suas_badge_4color.3mf")
     write_3mf(parts, threemf, project_name="SUAS_Veteran_Crisis_QRF_Badge")
     print(f"wrote {threemf}")
+
+    # Exact top-down vector preview — what the print face will look like.
+    spec = {
+        "disk_r": 35.0,
+        "disk_color": "#0B0B0B",
+        "ring_in": 27.0, "ring_out": 34.0,
+        "ring_color": "#B22234",
+        "white_color": "#FFFFFF",
+        "white_polys": [skull_poly] + text_top_polys + text_bot_polys,
+        "gold_color": "#D4AF37",
+        "gold_polys": [ar15_poly],
+    }
+    svg_path = os.path.join(OUT, "preview_top.svg")
+    write_svg_top(spec, svg_path)
+    print(f"wrote {svg_path}")
 
 
 if __name__ == "__main__":
