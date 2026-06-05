@@ -81,3 +81,4 @@ When a Claude session starts, scan these:
 - Open PRs: https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls
 - See `RUNBOOK.md` for known broken systems and how to fix them
 - See `.claude/agents/suas-tech.md` for the tech-support subagent's specific charter
+- See `.claude/agents/suas-qc.md` for the quality-control reviewer. **Route any visual deliverable, public copy, or external communication through this agent BEFORE handing it to Jacob.** It cross-checks against current real-world examples and catches "this looks amateur" before delivery.

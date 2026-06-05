@@ -27,7 +27,11 @@ echo "  3. Plain language — reader is a tired veteran."
 echo "  4. Tax-deductibility claims must cite IRC Section 170."
 echo "  5. Veteran testimonials / photos need explicit consent."
 echo
-echo "Specialist subagent available: suas-tech (route SUAS tech tickets to it)."
+echo "Specialist subagents available:"
+echo "  - suas-tech : route SUAS tech tickets here"
+echo "  - suas-qc   : route ANY visual / public-copy / external-comms deliverable"
+echo "                here BEFORE handing it to Jacob. It cross-checks against"
+echo "                current real-world examples and catches amateur work early."
 echo
 
 # Best-effort fetch of gstack so its slash commands are available this session.
