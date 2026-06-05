@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-Generate a 4-color S.U.A.S. Veteran Crisis QRF service badge for the
-Bambu A1 Mini with AMS Lite. Outputs 4 STL parts and one bundled 3MF
-project file that opens directly in Orca Slicer.
+S.U.A.S. Veteran Crisis QRF — Punisher-style 4-color service badge.
 
-Design (stacked layers, total 3.2 mm tall, 70 mm diameter):
-  Part 1 (extruder 1, BLACK)  base disk      r=35.0  h=2.0  z0=0.0
-  Part 2 (extruder 2, RED)    outer ring     r=28-33 h=0.6  z0=2.0
-  Part 3 (extruder 3, WHITE)  5-point star   r=24/10 h=0.6  z0=2.0
-  Part 4 (extruder 4, GOLD)   inner star     r=11/4.5 h=0.6 z0=2.6
+Layout (Bambu A1 Mini + AMS Lite, total 3.0 mm tall, 70 mm diameter):
+  Part 1 (extruder 1, BLACK) base disk          r=35.0  z=0.0..2.0
+  Part 2 (extruder 2, RED)   outer ring         r=27..34 z=2.0..2.6
+  Part 3 (extruder 3, WHITE) skull + arc text   z=2.0..2.6 (skull)
+                                                z=2.6..3.0 (text on ring)
+  Part 4 (extruder 4, GOLD)  AR-15 silhouette   z=2.0..2.6 (over skull)
+
+Top arc: "SUAS"
+Bottom arc: "SHUT UP AND SERVE"
 """
 
 import math
@@ -22,13 +24,13 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 # ---------- STL primitives ----------
 
 def _norm(v1, v2, v3):
-    ux, uy, uz = v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2]
-    vx, vy, vz = v3[0] - v1[0], v3[1] - v1[1], v3[2] - v1[2]
-    nx = uy * vz - uz * vy
-    ny = uz * vx - ux * vz
-    nz = ux * vy - uy * vx
-    L = math.sqrt(nx * nx + ny * ny + nz * nz) or 1.0
-    return (nx / L, ny / L, nz / L)
+    ux, uy, uz = v2[0]-v1[0], v2[1]-v1[1], v2[2]-v1[2]
+    vx, vy, vz = v3[0]-v1[0], v3[1]-v1[1], v3[2]-v1[2]
+    nx = uy*vz - uz*vy
+    ny = uz*vx - ux*vz
+    nz = ux*vy - uy*vx
+    L = math.sqrt(nx*nx + ny*ny + nz*nz) or 1.0
+    return (nx/L, ny/L, nz/L)
 
 
 def tri(a, b, c):
@@ -50,21 +52,18 @@ def write_binary_stl(triangles, path):
             ))
 
 
-# ---------- Shape generators ----------
+# ---------- Disk + annulus ----------
 
 def disk(r, h, z0, segs=180):
     tris = []
-    top = z0 + h
-    bot = z0
-    ctop = (0.0, 0.0, top)
-    cbot = (0.0, 0.0, bot)
+    top = z0 + h; bot = z0
+    ctop = (0.0, 0.0, top); cbot = (0.0, 0.0, bot)
     for i in range(segs):
-        a1 = 2 * math.pi * i / segs
-        a2 = 2 * math.pi * (i + 1) / segs
-        p1t = (r * math.cos(a1), r * math.sin(a1), top)
-        p2t = (r * math.cos(a2), r * math.sin(a2), top)
-        p1b = (r * math.cos(a1), r * math.sin(a1), bot)
-        p2b = (r * math.cos(a2), r * math.sin(a2), bot)
+        a1 = 2*math.pi*i/segs; a2 = 2*math.pi*(i+1)/segs
+        p1t = (r*math.cos(a1), r*math.sin(a1), top)
+        p2t = (r*math.cos(a2), r*math.sin(a2), top)
+        p1b = (r*math.cos(a1), r*math.sin(a1), bot)
+        p2b = (r*math.cos(a2), r*math.sin(a2), bot)
         tris.append(tri(ctop, p1t, p2t))
         tris.append(tri(cbot, p2b, p1b))
         tris.append(tri(p1b, p2b, p2t))
@@ -74,96 +73,327 @@ def disk(r, h, z0, segs=180):
 
 def annulus(r_in, r_out, h, z0, segs=180):
     tris = []
-    top = z0 + h
-    bot = z0
+    top = z0 + h; bot = z0
     for i in range(segs):
-        a1 = 2 * math.pi * i / segs
-        a2 = 2 * math.pi * (i + 1) / segs
-        po1t = (r_out * math.cos(a1), r_out * math.sin(a1), top)
-        po2t = (r_out * math.cos(a2), r_out * math.sin(a2), top)
-        pi1t = (r_in * math.cos(a1), r_in * math.sin(a1), top)
-        pi2t = (r_in * math.cos(a2), r_in * math.sin(a2), top)
-        po1b = (r_out * math.cos(a1), r_out * math.sin(a1), bot)
-        po2b = (r_out * math.cos(a2), r_out * math.sin(a2), bot)
-        pi1b = (r_in * math.cos(a1), r_in * math.sin(a1), bot)
-        pi2b = (r_in * math.cos(a2), r_in * math.sin(a2), bot)
-        # top face
+        a1 = 2*math.pi*i/segs; a2 = 2*math.pi*(i+1)/segs
+        po1t = (r_out*math.cos(a1), r_out*math.sin(a1), top)
+        po2t = (r_out*math.cos(a2), r_out*math.sin(a2), top)
+        pi1t = (r_in*math.cos(a1), r_in*math.sin(a1), top)
+        pi2t = (r_in*math.cos(a2), r_in*math.sin(a2), top)
+        po1b = (r_out*math.cos(a1), r_out*math.sin(a1), bot)
+        po2b = (r_out*math.cos(a2), r_out*math.sin(a2), bot)
+        pi1b = (r_in*math.cos(a1), r_in*math.sin(a1), bot)
+        pi2b = (r_in*math.cos(a2), r_in*math.sin(a2), bot)
         tris.append(tri(po1t, po2t, pi2t))
         tris.append(tri(po1t, pi2t, pi1t))
-        # bottom face (reverse winding)
         tris.append(tri(po1b, pi1b, pi2b))
         tris.append(tri(po1b, pi2b, po2b))
-        # outer wall
         tris.append(tri(po1b, po2b, po2t))
         tris.append(tri(po1b, po2t, po1t))
-        # inner wall (faces inward)
         tris.append(tri(pi1b, pi2t, pi2b))
         tris.append(tri(pi1b, pi1t, pi2t))
     return tris
 
 
-def star_prism(points, r_out, r_in, h, z0, rotation=math.pi / 2):
+# ---------- Polygon triangulation (ear clipping) ----------
+
+def signed_area(poly):
+    s = 0.0
+    n = len(poly)
+    for i in range(n):
+        x1, y1 = poly[i]
+        x2, y2 = poly[(i+1) % n]
+        s += x1*y2 - x2*y1
+    return s / 2.0
+
+
+def ensure_ccw(poly):
+    if signed_area(poly) < 0:
+        return list(reversed(poly))
+    return list(poly)
+
+
+def _convex_ccw(p, c, n):
+    return (c[0]-p[0]) * (n[1]-c[1]) - (c[1]-p[1]) * (n[0]-c[0]) > 1e-9
+
+
+def _point_in_tri(p, a, b, c):
+    def sign(p1, p2, p3):
+        return (p1[0]-p3[0])*(p2[1]-p3[1]) - (p2[0]-p3[0])*(p1[1]-p3[1])
+    d1 = sign(p, a, b); d2 = sign(p, b, c); d3 = sign(p, c, a)
+    neg = d1 < 0 or d2 < 0 or d3 < 0
+    pos = d1 > 0 or d2 > 0 or d3 > 0
+    return not (neg and pos)
+
+
+def ear_clip(poly):
+    poly = ensure_ccw(poly)
+    idx = list(range(len(poly)))
     tris = []
-    top = z0 + h
-    bot = z0
-    n = points * 2
-    verts = []
+    guard = 0
+    while len(idx) > 3 and guard < 20000:
+        guard += 1
+        n = len(idx)
+        found = False
+        for i in range(n):
+            pi = idx[(i-1) % n]; ci = idx[i]; ni = idx[(i+1) % n]
+            p, c, nx = poly[pi], poly[ci], poly[ni]
+            if not _convex_ccw(p, c, nx):
+                continue
+            ok = True
+            for j in range(n):
+                if j in ((i-1) % n, i, (i+1) % n):
+                    continue
+                if _point_in_tri(poly[idx[j]], p, c, nx):
+                    ok = False; break
+            if ok:
+                tris.append((pi, ci, ni))
+                del idx[i]
+                found = True
+                break
+        if not found:
+            break
+    if len(idx) == 3:
+        tris.append(tuple(idx))
+    return poly, tris
+
+
+def extrude_polygon(poly_xy, z_bot, z_top):
+    poly, tri_idx = ear_clip(poly_xy)
+    tris = []
+    for i1, i2, i3 in tri_idx:
+        a = (poly[i1][0], poly[i1][1], z_top)
+        b = (poly[i2][0], poly[i2][1], z_top)
+        c = (poly[i3][0], poly[i3][1], z_top)
+        tris.append(tri(a, b, c))
+        ab = (poly[i1][0], poly[i1][1], z_bot)
+        bb = (poly[i2][0], poly[i2][1], z_bot)
+        cb = (poly[i3][0], poly[i3][1], z_bot)
+        tris.append(tri(cb, bb, ab))
+    n = len(poly)
     for i in range(n):
-        ang = rotation + 2 * math.pi * i / n
-        r = r_out if i % 2 == 0 else r_in
-        verts.append((r * math.cos(ang), r * math.sin(ang)))
-    ctop = (0.0, 0.0, top)
-    cbot = (0.0, 0.0, bot)
-    for i in range(n):
-        v1 = (verts[i][0], verts[i][1], top)
-        v2 = (verts[(i + 1) % n][0], verts[(i + 1) % n][1], top)
-        tris.append(tri(ctop, v1, v2))
-        v1b = (verts[i][0], verts[i][1], bot)
-        v2b = (verts[(i + 1) % n][0], verts[(i + 1) % n][1], bot)
-        tris.append(tri(cbot, v2b, v1b))
-        # wall
-        tris.append(tri(v1b, v2b, v2))
-        tris.append(tri(v1b, v2, v1))
+        a = poly[i]; b = poly[(i+1) % n]
+        ab = (a[0], a[1], z_bot); at_v = (a[0], a[1], z_top)
+        bb = (b[0], b[1], z_bot); bt = (b[0], b[1], z_top)
+        tris.append(tri(ab, bb, bt))
+        tris.append(tri(ab, bt, at_v))
     return tris
+
+
+# ---------- Block letters (5 wide x 6 tall, stroke 1, slit 0.3 where holes exist) ----------
+
+LETTER_S = [
+    (0, 0), (5, 0), (5, 3.5), (1, 3.5), (1, 5), (5, 5),
+    (5, 6), (0, 6), (0, 2.5), (4, 2.5), (4, 1), (0, 1),
+]
+
+LETTER_U = [
+    (0, 0), (5, 0), (5, 6), (4, 6), (4, 1), (1, 1), (1, 6), (0, 6),
+]
+
+LETTER_A = [
+    (0, 0), (1, 0), (1, 2.5),
+    (2.35, 2.5), (2.35, 3.5),
+    (1, 3.5), (1, 5),
+    (4, 5), (4, 3.5),
+    (2.65, 3.5), (2.65, 2.5),
+    (4, 2.5), (4, 0),
+    (5, 0), (5, 6), (0, 6),
+]
+
+LETTER_H = [
+    (0, 0), (1, 0), (1, 2.5), (4, 2.5), (4, 0), (5, 0),
+    (5, 6), (4, 6), (4, 3.5), (1, 3.5), (1, 6), (0, 6),
+]
+
+LETTER_T = [
+    (2, 0), (3, 0), (3, 5), (5, 5), (5, 6), (0, 6), (0, 5), (2, 5),
+]
+
+LETTER_P = [
+    (0, 0), (1, 0), (1, 3),
+    (2.35, 3), (2.35, 4),
+    (1, 4), (1, 5),
+    (4, 5), (4, 4),
+    (2.65, 4), (2.65, 3),
+    (5, 3), (5, 6), (0, 6),
+]
+
+LETTER_N = [
+    (0, 0), (1, 0), (1, 5), (4, 0), (5, 0),
+    (5, 6), (4, 6), (4, 1), (1, 6), (0, 6),
+]
+
+LETTER_D = [
+    (0, 0), (2.35, 0), (2.35, 1), (1, 1), (1, 5),
+    (4, 5), (4, 1), (2.65, 1), (2.65, 0), (5, 0),
+    (5, 6), (0, 6),
+]
+
+LETTER_E = [
+    (0, 0), (5, 0), (5, 1), (1, 1), (1, 2.5), (4, 2.5),
+    (4, 3.5), (1, 3.5), (1, 5), (5, 5), (5, 6), (0, 6),
+]
+
+LETTER_R = [
+    (0, 0), (1, 0), (1, 3),
+    (2.35, 3), (2.35, 4),
+    (1, 4), (1, 5),
+    (4, 5), (4, 4),
+    (2.65, 4), (2.65, 3),
+    (4, 3),
+    (4, 0), (5, 0), (5, 6), (0, 6),
+]
+
+LETTER_V = [
+    (2.5, 0), (5, 6), (4, 6), (2.5, 2.4), (1, 6), (0, 6),
+]
+
+LETTERS = {
+    "S": LETTER_S, "U": LETTER_U, "A": LETTER_A, "H": LETTER_H,
+    "T": LETTER_T, "P": LETTER_P, "N": LETTER_N, "D": LETTER_D,
+    "E": LETTER_E, "R": LETTER_R, "V": LETTER_V,
+}
+
+LETTER_W = 5.0
+LETTER_H_ = 6.0
+SPACE_W = 4.0
+
+
+# ---------- Skull silhouette (sunglasses-style merged eye socket) ----------
+
+# Outline CCW from chin bottom-center; slit at x=±0.15 from cranium top down
+# into a single elongated eye cavity. ~13 mm tall x ~12 mm wide.
+SKULL = [
+    (0, -6), (3, -5.5), (4, -3), (5, 0), (6, 5), (5, 6.5), (3, 7),
+    (0.15, 7), (0.15, 3.5), (3.5, 3.5), (3.5, 1),
+    (-3.5, 1), (-3.5, 3.5), (-0.15, 3.5), (-0.15, 7),
+    (-3, 7), (-5, 6.5), (-6, 5), (-5, 0), (-4, -3), (-3, -5.5),
+]
+
+
+# ---------- AR-15 silhouette (CW; ear_clip will normalise) ----------
+
+AR15_CW = [
+    (20, 0.5),   (20, -0.5),
+    (10, -0.5),  (10, -2.5),
+    (2, -2.5),   (2, -1),
+    (1, -1),     (0.5, -7),
+    (-5, -7),    (-4, -1),
+    (-5, -1),
+    (-5, -4),    (-8, -4), (-8, -1),
+    (-9, -1),
+    (-10, -8),   (-13, -8),
+    (-12, -1),
+    (-22, -1),   (-22, 2),
+    (-12, 2),    (-12, 3),
+    (-9, 3),     (-9, 5.5),
+    (-2, 5.5),   (-2, 3),
+    (2, 3),      (2, 2.5),
+    (10, 2.5),   (10, 0.5),
+    (15, 0.5),   (15, 4.5),
+    (17, 4.5),   (17, 0.5),
+]
+
+
+# ---------- Transforms ----------
+
+def scale_translate(poly, scale=1.0, dx=0.0, dy=0.0):
+    return [(x*scale + dx, y*scale + dy) for x, y in poly]
+
+
+def rotate_translate(poly, theta_rad, dx, dy):
+    c, s = math.cos(theta_rad), math.sin(theta_rad)
+    return [(c*x - s*y + dx, s*x + c*y + dy) for x, y in poly]
+
+
+# ---------- Arc text layout ----------
+
+def arc_text(text, scale, char_gap, baseline_radius,
+             center_angle_deg, side="top"):
+    """
+    Lay out `text` on an arc, centered at `center_angle_deg`.
+    side="top": letters read CW around the top (interior of badge below),
+                letter "up" = outward radial.
+    side="bottom": letters read CCW around the bottom (interior above),
+                   letter "up" = inward radial.
+    """
+    char_w = LETTER_W * scale
+    space_w = SPACE_W * scale
+    gap_w = char_gap * scale
+
+    advances = []
+    for ch in text:
+        if ch == " ":
+            advances.append(space_w)
+        else:
+            advances.append(char_w)
+
+    total_arc = sum(advances) + max(0, len(text)-1) * gap_w
+    half_angle = (total_arc / 2.0) / baseline_radius
+
+    if side == "top":
+        cursor_ang = math.radians(center_angle_deg) + half_angle
+        sign = -1
+    else:
+        cursor_ang = math.radians(center_angle_deg) - half_angle
+        sign = +1
+
+    polys = []
+    for i, ch in enumerate(text):
+        adv = advances[i]
+        half_adv_ang = (adv / 2.0) / baseline_radius
+        cursor_ang += sign * half_adv_ang
+        center_ang = cursor_ang
+
+        if ch != " " and ch in LETTERS:
+            letter = LETTERS[ch]
+            # Center the letter on its own origin
+            centered = [(x - LETTER_W/2.0, y - LETTER_H_/2.0) for x, y in letter]
+            scaled = [(x*scale, y*scale) for x, y in centered]
+
+            if side == "top":
+                # local +Y -> outward radial = (cos a, sin a)
+                # local +X -> CW tangent     = (sin a, -cos a)
+                a = center_ang
+                sa, ca = math.sin(a), math.cos(a)
+                rotated = [(x*sa + y*ca, -x*ca + y*sa) for x, y in scaled]
+            else:
+                # local +Y -> inward radial  = (-cos a, -sin a)
+                # local +X -> CCW tangent    = (-sin a, cos a)
+                a = center_ang
+                sa, ca = math.sin(a), math.cos(a)
+                rotated = [(-x*sa - y*ca, x*ca - y*sa) for x, y in scaled]
+
+            px = baseline_radius * math.cos(center_ang)
+            py = baseline_radius * math.sin(center_ang)
+            polys.append([(x + px, y + py) for x, y in rotated])
+
+        cursor_ang += sign * (half_adv_ang + gap_w / baseline_radius)
+
+    return polys
 
 
 # ---------- 3MF writer ----------
 
 def triangles_to_3mf_mesh(triangles):
-    """Deduplicate vertices, return (vertices_list, triangle_indices_list)."""
-    idx = {}
-    verts = []
-    tris_idx = []
+    idx = {}; verts = []; tris_idx = []
     for _, a, b, c in triangles:
         face = []
         for v in (a, b, c):
-            key = (round(v[0], 5), round(v[1], 5), round(v[2], 5))
-            i = idx.get(key)
+            k = (round(v[0], 5), round(v[1], 5), round(v[2], 5))
+            i = idx.get(k)
             if i is None:
-                i = len(verts)
-                idx[key] = i
-                verts.append(key)
+                i = len(verts); idx[k] = i; verts.append(k)
             face.append(i)
         tris_idx.append(tuple(face))
     return verts, tris_idx
 
 
-def write_3mf(parts, path, project_name="SUAS_Badge"):
-    """
-    parts: list of dicts with keys:
-      name        — human label
-      triangles   — list of STL triangles
-      extruder    — 1..4 (AMS slot)
-      color_hex   — "#RRGGBB" for slicer preview
-    """
+def write_3mf(parts, path, project_name):
     CORE_NS = "http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
     SLIC3R_NS = "http://schemas.slic3r.org/3mf/2017/06"
-
-    # build 3D/3dmodel.model
-    object_xml_parts = []
-    component_xml_parts = []
-    object_ids = []
-
+    object_xml_parts = []; component_xml_parts = []
     for i, p in enumerate(parts, start=1):
         verts, tris = triangles_to_3mf_mesh(p["triangles"])
         v_xml = "\n".join(
@@ -181,9 +411,7 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
             f'    </mesh>\n'
             f'  </object>'
         )
-        object_ids.append(i)
         component_xml_parts.append(f'      <component objectid="{i}"/>')
-
     assembly_id = len(parts) + 1
     assembly_xml = (
         f'  <object id="{assembly_id}" type="model" partnumber="{project_name}">\n'
@@ -191,7 +419,6 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
         f'    </components>\n'
         f'  </object>'
     )
-
     model_xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         f'<model unit="millimeter" xml:lang="en-US" '
@@ -208,8 +435,6 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
         '  </build>\n'
         '</model>\n'
     )
-
-    # Bambu/Orca model_settings.config — per-part filament assignment
     parts_xml = []
     for i, p in enumerate(parts, start=1):
         parts_xml.append(
@@ -228,7 +453,6 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
         '  </object>\n'
         '</config>\n'
     )
-
     content_types = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">\n'
@@ -238,7 +462,6 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
         '  <Default Extension="config" ContentType="application/vnd.ms-printing.printticket+xml"/>\n'
         '</Types>\n'
     )
-
     rels = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n'
@@ -246,7 +469,6 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
         'Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>\n'
         '</Relationships>\n'
     )
-
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
         z.writestr("[Content_Types].xml", content_types)
         z.writestr("_rels/.rels", rels)
@@ -257,37 +479,51 @@ def write_3mf(parts, path, project_name="SUAS_Badge"):
 # ---------- Build the badge ----------
 
 def main():
+    BASE_H = 2.0
+    RING_TOP = 2.6
+    TEXT_TOP = 3.0  # white text sits 0.4 mm proud of the red ring
+    EMBLEM_TOP = 2.6
+
+    # 1. Black base disk
+    base_tris = disk(r=35.0, h=BASE_H, z0=0.0, segs=180)
+
+    # 2. Red ring
+    ring_tris = annulus(r_in=27.0, r_out=34.0,
+                        h=RING_TOP-BASE_H, z0=BASE_H, segs=180)
+
+    # 3. White: skull (z=2.0..2.6) + curved top text + curved bottom text
+    #          (text z=2.6..3.0 sitting on the red ring)
+    skull_poly = scale_translate(SKULL, scale=1.0, dx=0.0, dy=0.0)
+    skull_tris = extrude_polygon(skull_poly, z_bot=BASE_H, z_top=EMBLEM_TOP)
+
+    text_top_polys = arc_text(
+        "SUAS", scale=0.7, char_gap=1.0,
+        baseline_radius=30.5, center_angle_deg=90, side="top",
+    )
+    text_bot_polys = arc_text(
+        "SHUT UP AND SERVE", scale=0.55, char_gap=1.0,
+        baseline_radius=30.5, center_angle_deg=270, side="bottom",
+    )
+    text_tris = []
+    for p in text_top_polys + text_bot_polys:
+        text_tris.extend(extrude_polygon(p, z_bot=RING_TOP, z_top=TEXT_TOP))
+
+    white_tris = skull_tris + text_tris
+
+    # 4. Gold AR-15 silhouette across the skull at eye level
+    ar15_poly = scale_translate(AR15_CW, scale=0.55, dx=0.0, dy=2.25)
+    ar15_tris = extrude_polygon(ar15_poly,
+                                z_bot=BASE_H, z_top=EMBLEM_TOP)
+
     parts = [
-        {
-            "name": "01_base_black",
-            "triangles": disk(r=35.0, h=2.0, z0=0.0, segs=180),
-            "extruder": 1,
-            "color_hex": "#0B0B0B",
-        },
-        {
-            "name": "02_ring_red",
-            "triangles": annulus(r_in=28.0, r_out=33.0, h=0.6, z0=2.0, segs=180),
-            "extruder": 2,
-            "color_hex": "#B22234",
-        },
-        {
-            "name": "03_star_white",
-            "triangles": star_prism(
-                points=5, r_out=24.0, r_in=10.0, h=0.6, z0=2.0,
-                rotation=math.pi / 2,
-            ),
-            "extruder": 3,
-            "color_hex": "#FFFFFF",
-        },
-        {
-            "name": "04_inner_star_gold",
-            "triangles": star_prism(
-                points=5, r_out=11.0, r_in=4.5, h=0.6, z0=2.6,
-                rotation=math.pi / 2,
-            ),
-            "extruder": 4,
-            "color_hex": "#D4AF37",
-        },
+        {"name": "01_base_black", "triangles": base_tris,
+         "extruder": 1, "color_hex": "#0B0B0B"},
+        {"name": "02_ring_red", "triangles": ring_tris,
+         "extruder": 2, "color_hex": "#B22234"},
+        {"name": "03_white_skull_text", "triangles": white_tris,
+         "extruder": 3, "color_hex": "#FFFFFF"},
+        {"name": "04_ar15_gold", "triangles": ar15_tris,
+         "extruder": 4, "color_hex": "#D4AF37"},
     ]
 
     for p in parts:
