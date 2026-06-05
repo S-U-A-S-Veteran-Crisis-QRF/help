@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SUAS monogram for use with the MakerWorld Challenge Coin Generator.
+  Designed as a single high-contrast black silhouette on white so the
+  generator's image-to-color pass can cleanly separate foreground from
+  background. Square 1024x1024 canvas, centered, ~10% margin.
+
+  Composition:
+    - Shield silhouette (subtle, modern; not a tactical stencil)
+    - "SUAS" wordmark, stacked condensed sans, centered on the shield
+    - Five-point star at the top of the shield (service/community,
+      not combat)
+  No combat imagery, no weapons, no skulls. This is the donor-safe
+  variant; an internal-morale variant can be more aggressive.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="#ffffff"/>
+
+  <!-- Shield silhouette: rounded top, tapered point -->
+  <path d="
+    M 512 110
+    C 720 110, 870 150, 900 180
+    L 900 520
+    C 900 720, 760 860, 512 920
+    C 264 860, 124 720, 124 520
+    L 124 180
+    C 154 150, 304 110, 512 110
+    Z"
+    fill="#0a0a0a"/>
+
+  <!-- Inner shield bevel (thin white line for definition) -->
+  <path d="
+    M 512 160
+    C 700 160, 836 196, 862 222
+    L 862 520
+    C 862 700, 736 826, 512 880
+    C 288 826, 162 700, 162 520
+    L 162 222
+    C 188 196, 324 160, 512 160
+    Z"
+    fill="none" stroke="#ffffff" stroke-width="6" opacity="0.85"/>
+
+  <!-- Top star (community / service) -->
+  <polygon points="
+    512,210
+    528,258
+    578,258
+    537,287
+    553,335
+    512,306
+    471,335
+    487,287
+    446,258
+    496,258"
+    fill="#ffffff"/>
+
+  <!-- SUAS wordmark, condensed geometric sans, stacked tight -->
+  <g fill="#ffffff" font-family="Helvetica, Arial, sans-serif"
+     font-weight="900" text-anchor="middle"
+     letter-spacing="14">
+    <text x="512" y="500" font-size="180">SUAS</text>
+  </g>
+
+  <!-- Subtitle bar -->
+  <rect x="232" y="560" width="560" height="6" fill="#ffffff"/>
+
+  <!-- Subtitle text -->
+  <g fill="#ffffff" font-family="Helvetica, Arial, sans-serif"
+     font-weight="700" text-anchor="middle" letter-spacing="6">
+    <text x="512" y="620" font-size="54">VETERAN CRISIS QRF</text>
+  </g>
+
+  <!-- Founding year as a quiet anchor -->
+  <g fill="#ffffff" font-family="Helvetica, Arial, sans-serif"
+     font-weight="500" text-anchor="middle" letter-spacing="10" opacity="0.85">
+    <text x="512" y="700" font-size="36">EST. 2022</text>
+  </g>
+</svg>
