@@ -1,0 +1,8 @@
+_site/
+.jekyll-cache/
+.sass-cache/
+.bundle/
+vendor/
+
+# gstack is fetched fresh by .claude/hooks/suas-session-start.sh
+.gstack-cache/
