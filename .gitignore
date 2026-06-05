@@ -6,3 +6,10 @@ vendor/
 
 # gstack is fetched fresh by .claude/hooks/suas-session-start.sh
 .gstack-cache/
+
+# Local-only Jekyll dev (GitHub Pages builds via jekyll-build-pages action)
+Gemfile
+Gemfile.lock
+
+# One-off render artifacts
+_preview_*
