@@ -1,0 +1,15 @@
+Attempt to fetch the source .3mf from the sandbox.
+
+$ curl -sIL --max-time 10 -A "Mozilla/5.0 ..." \
+    https://makerworld.com/en/models/1348327-small-multicolor-ams-test-coin
+
+HTTP/2 403
+x-deny-reason: host_not_allowed
+content-length: 21
+content-type: text/plain
+
+Conclusion: MakerWorld is on the sandbox egress denylist (host_not_allowed
+is the sandbox's response, not MakerWorld's anti-bot). This is expected
+and not a MakerWorld block per se — even a fresh User-Agent and a real
+session cookie wouldn't get through because the request never leaves
+the sandbox. Jacob downloads manually in a browser. See README Step A.
