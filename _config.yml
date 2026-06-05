@@ -28,3 +28,7 @@ exclude:
   - AGENT_LINKS.md
   - README.md
   - .claude/
+  - .gstack-cache/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
