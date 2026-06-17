@@ -18,43 +18,58 @@ Plain-language playbooks for common technical issues. Use this as a checklist wh
 
 ## 1. Fix the domain (suasqrf.org)
 
-**Symptoms**: people typing `suasqrf.org` see a "site can't be reached" error, or the wrong page, or an expired-domain parking page.
+**Decision**: the public site at `suasqrf.org` is served by **Google Sites**. The GitHub Pages site at `s-u-a-s-veteran-crisis-qrf.github.io/help/` is an **internal director's dashboard only** and is not promoted publicly.
 
-### Diagnose (5 min)
+### Confirmed state (verified via DNS June 2026)
 
-1. Open https://lookup.icann.org/en/lookup and search `suasqrf.org`. Look for:
-   - **Registry Expiration Date** — if past, domain is expired
-   - **Name Servers** — if blank, no DNS
-   - **Registrar** — who you bought it from
-2. Open https://dnschecker.org/?query=suasqrf.org → check for A records
+- ✅ Domain is **registered and active**
+- ✅ Nameservers: Google Cloud DNS (`ns-cloud-d1..d4.googledomains.com`)
+- ✅ Email works (MX → Google Workspace `aspmx.l.google.com`)
+- ⚠️ Apex A record currently points to **Squarespace** (`198.185.159.145`) — this is the old/placeholder destination. We're moving it to **Google Sites**.
+- Registrar: **Squarespace Domains** (was Google Domains; Google sold to Squarespace in 2024)
 
-### Fix path A: Domain expired
-- Log in to your registrar
-- Renew the domain
-- Wait for renewal to propagate (usually instant)
-- Then follow Fix path B
+### Goal
 
-### Fix path B: DNS not configured
-- Log in to registrar → DNS Manager
-- Add **A records** for the apex (`@` or blank):
-  ```
-  185.199.108.153
-  185.199.109.153
-  185.199.110.153
-  185.199.111.153
-  ```
-- Add **CNAME record** for `www`:
-  ```
-  www  →  s-u-a-s-veteran-crisis-qrf.github.io
-  ```
-- Save. Wait 5–60 min for DNS propagation.
-- In GitHub: Settings → Pages → Custom domain: `suasqrf.org` → Save
-- Once DNS check passes, enable **"Enforce HTTPS"**
+Point `suasqrf.org` at the SUAS Google Site so visitors land on it.
 
-### Fix path C: Don't know which registrar
-- Check your credit card statements for "domain" or "GoDaddy/Namecheap/etc."
-- Or visit https://lookup.icann.org/en/lookup — the Registrar field shows who holds it
-- If you find a registrar but no longer have the login, use their account recovery flow with `jacobsilver@suasqrf.org`
+### Step 1 — Get the Google Site ready
+
+1. Sign in to https://sites.google.com with the Workspace account that owns it (your `@suasqrf.org` account, or `jacobsterlingsilver@gmail.com` if you set it up there).
+2. Find the SUAS site in your sites list (or create one).
+3. Edit content. Make sure the **Veterans Crisis Line (988, press 1)** is on the homepage — non-negotiable.
+4. Click **Publish** (top right). Note the site URL.
+5. **Share** → "General access" → **Anyone with the link → Viewer**.
+
+### Step 2 — Add custom domain in Google Sites
+
+1. In the site → Settings (⚙) → **Custom domains** → **Start setup** → **Use a custom domain**.
+2. Enter `www.suasqrf.org`. Google may require the `www` form.
+3. Google Sites will show you the DNS records to add. Typically:
+   - **CNAME** `www` → `ghs.googlehosted.com.`
+   - **TXT** at apex for domain verification (Google may auto-detect the existing `google-site-verification` TXT record)
+
+### Step 3 — Add the DNS records at Squarespace
+
+1. Sign in at https://account.squarespace.com (use `jacobsterlingsilver@gmail.com` — the email tied to the original Google Domains purchase).
+2. **Domains** → `suasqrf.org` → **DNS**.
+3. Add exactly the records Google Sites told you to add.
+4. **For the apex** (`suasqrf.org` without `www`): set a **301 redirect** `suasqrf.org` → `https://www.suasqrf.org` so people typing the bare domain still land on the site. Squarespace Domains has a "Domain Forwarding" feature for this.
+5. Save.
+
+### Step 4 — Verify + go live
+
+1. Wait 5–60 minutes for DNS to propagate.
+2. Back in Google Sites → Custom domains → click **Verify**.
+3. Google will check the records and connect the domain.
+4. Visit `https://suasqrf.org` — should now land on the Google Site.
+
+### If you forgot which Google account owns the site
+
+Try in this order:
+1. `jacobsilver@suasqrf.org` (Workspace primary)
+2. `jacobsterlingsilver@gmail.com` (personal — likely registered Google Domains here)
+3. Any other Workspace account on the org (Mary's? Glen's?)
+4. Recovery: https://accounts.google.com/signin/recovery
 
 ---
 
@@ -92,7 +107,7 @@ Plain-language playbooks for common technical issues. Use this as a checklist wh
 | Site is gone | Check Trash in Google Drive within 30 days |
 
 ### Should we keep it?
-We're rebuilding everything at `suasqrf.org` (GitHub Pages). The Google Site duplicates effort. Consider taking it offline once `suasqrf.org` is live.
+**Yes — this is the public site.** Per the decision logged in §1, the Google Site is the canonical public-facing destination served at `suasqrf.org`. The GitHub Pages site is an internal director-only dashboard, not a replacement.
 
 ---
 

@@ -21,7 +21,8 @@ sitemap: false
 | Check the calendar | [Google Calendar](https://calendar.google.com/) |
 | See what's broken / what's pending | [GitHub Issues](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/issues) |
 | See what's in review | [GitHub PRs](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls) |
-| See the live public site | [s-u-a-s-veteran-crisis-qrf.github.io/help](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) |
+| See the live public site | [suasqrf.org](https://suasqrf.org/) (Google Sites — transition in progress, see [RUNBOOK §1](./RUNBOOK.md#1-fix-the-domain-suasqrforg)) |
+| See this internal dashboard | [s-u-a-s-veteran-crisis-qrf.github.io/help](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) (director-only) |
 | See if Pages deploy is green | [GitHub Actions](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/actions) |
 | Manage donations | [GoFundMe — Support Our Heroes](https://www.gofundme.com/f/support-our-heroes-combating-veteran-isolation) |
 | Manage Facebook | [Page](https://www.facebook.com/suasqrf/) · [Group](https://www.facebook.com/groups/451663376808281/) |
@@ -57,11 +58,11 @@ sitemap: false
 
 | System | Where | Status |
 |---|---|---|
-| Public landing site | [GitHub Pages](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) | Live |
-| `suasqrf.org` domain | Registrar (TBD) | Down — DNS not set. See [RUNBOOK §1](./RUNBOOK.md#1-fix-the-domain-suasqrforg) |
-| Old Google Site | `sites.google.com/view/suausqrf/home` | Inoperative — being retired |
+| Public landing site | [suasqrf.org](https://suasqrf.org/) (Google Sites) | Transition in progress — domain alive on Squarespace, moving to Google Sites. See [RUNBOOK §1](./RUNBOOK.md#1-fix-the-domain-suasqrforg) |
+| `suasqrf.org` domain registration | Squarespace Domains (originally Google Domains) | Active, DNS on Google Cloud DNS, email working |
+| Internal director's dashboard | [GitHub Pages](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) | This site — director-only, not promoted publicly |
 | Google Workspace | [admin.google.com](https://admin.google.com/) | Active |
-| Director email | `jacobsilver@suasqrf.org` | Active |
+| Director email | `jacobsilver@suasqrf.org` | Active (MX → Google Workspace) |
 | Source repo | [GitHub](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help) | Active |
 
 ---

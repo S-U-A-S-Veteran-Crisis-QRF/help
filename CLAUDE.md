@@ -29,11 +29,11 @@ This file is auto-loaded by Claude Code in every session on this repo. It exists
 
 | System | What it is | Status |
 |---|---|---|
-| `suasqrf.org` | Primary public domain | Currently down — DNS not pointing anywhere |
-| GitHub Pages (`s-u-a-s-veteran-crisis-qrf.github.io/help`) | Replacement landing site, built from this repo | Configured via `.github/workflows/pages.yml` |
-| `sites.google.com/view/suausqrf/home` | Old Google Site | Reportedly inoperative |
+| `suasqrf.org` | Primary public domain — points at the public Google Site | Registered, DNS on Google Cloud DNS, apex A record currently `198.185.159.145` (Squarespace). Transition in progress to Google Sites — see RUNBOOK §1 |
+| Google Site at `sites.google.com` | Public landing site (in transition) | Workspace-hosted; will serve at `suasqrf.org` once DNS records added per RUNBOOK §1 |
+| GitHub Pages (`s-u-a-s-veteran-crisis-qrf.github.io/help`) | **Internal director-only dashboard** — _not_ the public site | Built from this repo via `.github/workflows/pages.yml`. Hosts `dashboard.md`, `PROJECTS.md`, `RUNBOOK.md`. Bookmarked only; not promoted publicly |
 | Google Workspace (Google for Nonprofits) | Email, Drive, Calendar | Active |
-| `jacobsilver@suasqrf.org` | Founder/director email | Active |
+| `jacobsilver@suasqrf.org` | Founder/director email | Active (MX = Google Workspace, confirmed via DNS) |
 | Facebook page + community group | Public-facing presence | Active |
 | GoFundMe — "Support Our Heroes" | Donation channel | Active |
 
