@@ -6,3 +6,6 @@ vendor/
 
 # gstack is fetched fresh by .claude/hooks/suas-session-start.sh
 .gstack-cache/
+
+# One-off render artifacts (mockups, previews — not committed)
+_preview_*
