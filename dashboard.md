@@ -21,7 +21,7 @@ sitemap: false
 | Check the calendar | [Google Calendar](https://calendar.google.com/) |
 | See what's broken / what's pending | [GitHub Issues](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/issues) |
 | See what's in review | [GitHub PRs](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls) |
-| See the live public site | [s-u-a-s-veteran-crisis-qrf.github.io/help](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) |
+| See the live public site | [saus.noaerth.com](https://saus.noaerth.com/) |
 | See if Pages deploy is green | [GitHub Actions](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/actions) |
 | Manage donations | [GoFundMe — Support Our Heroes](https://www.gofundme.com/f/support-our-heroes-combating-veteran-isolation) |
 | Manage Facebook | [Page](https://www.facebook.com/suasqrf/) · [Group](https://www.facebook.com/groups/451663376808281/) |
@@ -57,7 +57,7 @@ sitemap: false
 
 | System | Where | Status |
 |---|---|---|
-| Public landing site | [GitHub Pages](https://s-u-a-s-veteran-crisis-qrf.github.io/help/) | Live |
+| Public landing site | [saus.noaerth.com](https://saus.noaerth.com/) (GitHub Pages) | Live once DNS + Pages enabled |
 | `suasqrf.org` domain | Registrar (TBD) | Down — DNS not set. See [RUNBOOK §1](./RUNBOOK.md#1-fix-the-domain-suasqrforg) |
 | Old Google Site | `sites.google.com/view/suausqrf/home` | Inoperative — being retired |
 | Google Workspace | [admin.google.com](https://admin.google.com/) | Active |

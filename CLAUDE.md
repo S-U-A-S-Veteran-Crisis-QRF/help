@@ -30,7 +30,7 @@ This file is auto-loaded by Claude Code in every session on this repo. It exists
 | System | What it is | Status |
 |---|---|---|
 | `suasqrf.org` | Primary public domain | Currently down — DNS not pointing anywhere |
-| GitHub Pages (`s-u-a-s-veteran-crisis-qrf.github.io/help`) | Replacement landing site, built from this repo | Configured via `.github/workflows/pages.yml` |
+| `saus.noaerth.com` (GitHub Pages) | Public landing site, built from this repo | Configured via `.github/workflows/pages.yml` + `CNAME` |
 | `sites.google.com/view/suausqrf/home` | Old Google Site | Reportedly inoperative |
 | Google Workspace (Google for Nonprofits) | Email, Drive, Calendar | Active |
 | `jacobsilver@suasqrf.org` | Founder/director email | Active |
