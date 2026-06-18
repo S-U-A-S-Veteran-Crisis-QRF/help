@@ -11,6 +11,14 @@ sitemap: false
 
 > **In immediate crisis?** **Veterans Crisis Line: dial 988, press 1.** Text 838255. [VeteransCrisisLine.net](https://www.veteranscrisisline.net/)
 
+## Live status
+
+[![Pages deploy](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/actions/workflows/pages.yml/badge.svg)](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/actions/workflows/pages.yml)
+[![Open PRs](https://img.shields.io/github/issues-pr/S-U-A-S-Veteran-Crisis-QRF/help?label=open%20PRs)](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls)
+[![Open issues](https://img.shields.io/github/issues/S-U-A-S-Veteran-Crisis-QRF/help?label=open%20issues)](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/issues)
+[![Last commit](https://img.shields.io/github/last-commit/S-U-A-S-Veteran-Crisis-QRF/help)](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/commits/main)
+[![PRs merged](https://img.shields.io/github/issues-pr-closed-raw/S-U-A-S-Veteran-Crisis-QRF/help?label=merged%20PRs)](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls?q=is%3Apr+is%3Amerged)
+
 ---
 
 ## Quick actions
@@ -66,25 +74,72 @@ sitemap: false
 
 ---
 
-## Working with Claude (and any agent)
+## Your AI staff
 
-This repo auto-loads SUAS context for every Claude Code session via `.claude/skills/suas-bootstrap/`. All agents working SUAS — `suas-tech`, the main assistant, anything you spawn — read the same playbook.
+Every Claude session on this repo auto-loads SUAS context via the `suas-bootstrap` skill and the SessionStart hook. The roster below is your standing crew. Each has a charter file in the repo; click through to read it.
 
-Useful things to say:
+| Agent | Role | Charter | Cost / latency |
+|---|---|---|---|
+| **suas-tech** | **Reactive tech support.** Site down, email broken, DNS, Pages deploy. Diagnoses first, then acts. | [`.claude/agents/suas-tech.md`](./.claude/agents/suas-tech.md) | Sonnet — fast |
+| **suas-project-finisher** | **Proactive backlog driver.** Picks up open issues + PRs + failing deploys and drives each to merged/closed. Auto-merges its own PRs on green. | [`.claude/agents/suas-project-finisher.md`](./.claude/agents/suas-project-finisher.md) | Sonnet — fast |
+| **suas-bootstrap** (skill) | **Auto-loads SUAS context into every agent.** Mission, leadership, working rules, RUNBOOK, gstack surface. | [`.claude/skills/suas-bootstrap/SKILL.md`](./.claude/skills/suas-bootstrap/SKILL.md) | n/a — skill, not an agent |
+| **gstack commands** | Garry Tan's [23-command Claude framework](https://github.com/garrytan/gstack), fetched on every session. Useful: `/document-release`, `/design-review`, `/cso`, `/benchmark`, `/learn`, `/ship`, `/retro`. | [`.claude/hooks/suas-session-start.sh`](./.claude/hooks/suas-session-start.sh) | varies |
 
-- "Fix the domain." → Claude diagnoses DNS and gives you copy-paste records.
-- "Update the landing page to mention [X]." → Claude opens a PR.
-- "What's broken right now?" → Claude scans issues, Actions, and the live site.
-- "Show me the dashboard." → opens this page.
+### How to call them
 
-The **suas-tech** subagent is the dedicated tech specialist. The main Claude session will route to it automatically for SUAS infrastructure questions.
+| You say… | What happens |
+|---|---|
+| "Fix the domain." | Main session diagnoses DNS and gives you copy-paste records (often via `suas-tech`). |
+| "Update the landing page to mention [X]." | Main session opens a PR. |
+| "What's broken right now?" | Main session scans issues, Actions, live site. |
+| "Finish this project." / "Drive the backlog." | Spawns `suas-project-finisher` to clear open threads autonomously. |
+| "Show me the dashboard." | Opens this page. |
 
-This repo also ships gstack (Garry Tan's Claude Code framework) on session start. Useful slash commands for SUAS work:
+## Recent agent activity
 
-- `/document-release` — refresh docs after a site change
-- `/design-review` — audit the public site for visual issues
-- `/cso` — security review (donor links, forms)
-- `/learn` — preserve editorial decisions across sessions
+<div id="agent-activity" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <em>Loading recent agent PRs from GitHub…</em>
+</div>
+
+<script>
+(async () => {
+  const target = document.getElementById('agent-activity');
+  try {
+    const resp = await fetch('https://api.github.com/repos/S-U-A-S-Veteran-Crisis-QRF/help/pulls?state=all&per_page=30&sort=updated&direction=desc');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const prs = await resp.json();
+    const agentPRs = prs.filter(p => (p.head && p.head.ref || '').startsWith('claude/')).slice(0, 12);
+    if (!agentPRs.length) {
+      target.innerHTML = '<em>No agent PRs yet. As Claude opens PRs on <code>claude/*</code> branches, they will appear here.</em>';
+      return;
+    }
+    const stateOf = p => p.merged_at ? '✅ merged' : (p.state === 'closed' ? '❌ closed' : '🟡 open');
+    const when = p => (p.merged_at || p.closed_at || p.updated_at || '').slice(0, 10);
+    const rows = agentPRs.map(p =>
+      `<tr>
+        <td><a href="${p.html_url}">#${p.number}</a></td>
+        <td><a href="${p.html_url}">${p.title.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</a></td>
+        <td>${stateOf(p)}</td>
+        <td>${when(p)}</td>
+        <td><code>${p.head.ref}</code></td>
+      </tr>`
+    ).join('');
+    target.innerHTML =
+      `<table style="width:100%; border-collapse: collapse;">
+         <thead><tr style="text-align:left; border-bottom: 2px solid #ccc;">
+           <th>PR</th><th>What an agent did</th><th>State</th><th>Date</th><th>Branch</th>
+         </tr></thead>
+         <tbody>${rows}</tbody>
+       </table>
+       <p style="font-size: 0.85em; color: #666;">Live from the GitHub API · only PRs on <code>claude/*</code> branches are shown · refresh to update.</p>`;
+  } catch (e) {
+    target.innerHTML =
+      `<em>Could not load live activity (GitHub API may be rate-limited from your IP).
+       View the full agent PR history on
+       <a href="https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/pulls?q=is%3Apr+head%3Aclaude">GitHub</a>.</em>`;
+  }
+})();
+</script>
 
 ---
 
