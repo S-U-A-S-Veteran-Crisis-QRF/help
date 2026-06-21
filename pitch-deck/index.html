@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.U.A.S. QRF App — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Lato:ital,wght@0,300;0,400;0,700;1,300&family=Source+Serif+4:ital,opsz,wght@1,8..60,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ground:#191C17;
+  --surface:#22261F;
+  --surface-2:#2B3027;
+  --text:#E8E4DC;
+  --text-muted:#82807A;
+  --accent:#C97D1E;
+  --accent-2:#5F7E50;
+  --border:rgba(232,228,220,0.07);
+}
+
+html,body{
+  height:100%;
+  overflow:hidden;
+  background:var(--ground);
+  color:var(--text);
+  font-family:'Lato',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── DECK SHELL ── */
+.deck{position:fixed;inset:0;overflow:hidden}
+
+/* ── SLIDES ── */
+.slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:60px 80px 100px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.45s ease;
+}
+.slide.active{opacity:1;pointer-events:all}
+
+@media(prefers-reduced-motion:reduce){
+  .slide{transition:opacity 0.1s}
+}
+
+/* ── GLOBAL CRISIS FOOTER ── */
+.crisis-bar{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:44px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  background:rgba(25,28,23,0.92);
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(8px);
+  z-index:200;
+  font-size:11px;letter-spacing:0.06em;
+  color:var(--text-muted);
+}
+.crisis-bar a{
+  font-family:'Oswald',sans-serif;
+  font-weight:500;font-size:12px;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;
+}
+.crisis-bar a:hover{text-decoration:underline}
+
+/* ── SLIDE DOTS ── */
+.dots{
+  position:fixed;
+  bottom:52px;left:50%;
+  transform:translateX(-50%);
+  display:flex;gap:7px;z-index:201;
+}
+.dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--text-muted);opacity:0.35;
+  cursor:pointer;border:none;
+  transition:opacity 0.25s,background 0.25s,transform 0.25s;
+}
+.dot.on{background:var(--accent);opacity:1;transform:scale(1.4)}
+
+/* ── ARROW BUTTONS ── */
+.arr{
+  position:fixed;top:50%;transform:translateY(-50%);
+  background:none;border:1px solid var(--border);
+  color:var(--text-muted);
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:201;font-size:16px;
+  transition:border-color 0.2s,color 0.2s,opacity 0.2s;
+}
+.arr:hover{border-color:var(--accent);color:var(--accent)}
+.arr:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.arr.dim{opacity:0.2;pointer-events:none}
+.arr-l{left:14px}
+.arr-r{right:14px}
+
+/* ── SHARED TYPE ── */
+.eyebrow{
+  font-family:'Oswald',sans-serif;
+  font-size:10px;font-weight:500;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:18px;
+}
+.disp{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;text-transform:uppercase;
+  letter-spacing:0.035em;line-height:0.93;
+  color:var(--text);
+}
+.disp-xl{font-size:clamp(48px,7.5vw,88px)}
+.disp-lg{font-size:clamp(34px,5.5vw,66px)}
+.disp-md{font-size:clamp(26px,3.8vw,44px)}
+
+.body{
+  font-family:'Lato',sans-serif;
+  font-weight:300;
+  font-size:clamp(14px,1.7vw,17px);
+  line-height:1.75;
+  color:var(--text-muted);
+}
+.body strong{color:var(--text);font-weight:400}
+
+/* ──────────────────────────────
+   SLIDE 1 — COVER
+   ────────────────────────────── */
+#s1{padding:0;background:var(--ground)}
+
+#topo{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
+
+.cover-inner{
+  position:relative;z-index:2;
+  max-width:900px;width:100%;
+  padding:60px 80px 100px;
+  margin:0 auto;
+}
+
+.cover-org{
+  font-family:'Oswald',sans-serif;
+  font-size:10px;font-weight:400;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--accent-2);
+  margin-bottom:52px;
+  display:flex;align-items:center;gap:14px;
+}
+.cover-org::after{
+  content:'';flex:0 0 60px;
+  height:1px;background:var(--accent-2);opacity:0.35;
+}
+
+.cover-h{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;text-transform:uppercase;
+  letter-spacing:0.025em;line-height:0.91;
+  font-size:clamp(44px,7vw,84px);
+  color:var(--text);
+  margin-bottom:36px;
+}
+.cover-h em{font-style:normal;color:var(--accent)}
+
+.cover-sub{
+  font-family:'Lato',sans-serif;
+  font-weight:300;
+  font-size:clamp(15px,1.9vw,19px);
+  line-height:1.65;
+  color:var(--text-muted);
+  max-width:480px;
+  margin-bottom:56px;
+}
+
+.cover-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid var(--border);
+  padding:9px 18px;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.cover-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;
+}
+
+/* ──────────────────────────────
+   SLIDE 2 — THE PROBLEM
+   ────────────────────────────── */
+.prob-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+  width:100%;max-width:960px;
+}
+.stat-big{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-weight:300;font-style:italic;
+  font-size:clamp(88px,14vw,168px);
+  line-height:0.82;
+  color:var(--accent);
+  letter-spacing:-0.02em;
+}
+.stat-unit{
+  font-family:'Oswald',sans-serif;
+  font-size:12px;font-weight:400;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);margin-top:12px;
+  line-height:1.6;
+}
+.stat-source{
+  font-size:11px;color:var(--text-muted);
+  opacity:0.55;margin-top:10px;
+  font-style:italic;
+}
+
+.prob-copy{display:flex;flex-direction:column;gap:22px}
+.prob-quote{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-weight:300;font-style:italic;
+  font-size:clamp(18px,2.6vw,26px);
+  line-height:1.45;color:var(--text);
+  border-left:2px solid var(--accent);
+  padding-left:22px;
+}
+
+/* ──────────────────────────────
+   SLIDE 3 — ISOLATION CYCLE
+   ────────────────────────────── */
+.cycle-wrap{width:100%;max-width:860px}
+
+.cycle-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-top:44px;
+}
+.cycle-cell{
+  background:var(--surface);
+  padding:36px 28px;
+  position:relative;
+}
+.cycle-cell::after{
+  content:'→';
+  position:absolute;right:-14px;top:50%;
+  transform:translateY(-50%);
+  color:var(--accent);font-size:16px;z-index:1;
+}
+.cycle-cell:last-child::after{display:none}
+
+.cycle-n{
+  font-family:'Oswald',sans-serif;
+  font-size:9px;letter-spacing:0.22em;
+  color:var(--accent-2);margin-bottom:14px;
+}
+.cycle-title{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;font-size:21px;
+  text-transform:uppercase;letter-spacing:0.04em;
+  color:var(--text);margin-bottom:10px;
+}
+.cycle-body{
+  font-size:13px;line-height:1.65;
+  color:var(--text-muted);
+}
+
+/* ──────────────────────────────
+   SLIDE 4 — THE SOLUTION
+   ────────────────────────────── */
+.sol-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:72px;align-items:center;
+  width:100%;max-width:960px;
+}
+.sol-copy{display:flex;flex-direction:column;gap:22px}
+
+.sol-tagline{
+  font-family:'Oswald',sans-serif;
+  font-weight:300;
+  font-size:clamp(20px,3vw,34px);
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  color:var(--text-muted);
+  line-height:1.25;
+}
+.sol-tagline strong{
+  display:block;font-weight:700;
+  color:var(--text);font-size:1.45em;
+}
+
+.pillars{display:flex;flex-direction:column}
+.pillar{
+  display:flex;align-items:flex-start;
+  gap:18px;padding:18px 0;
+  border-bottom:1px solid var(--border);
+}
+.pillar:first-child{border-top:1px solid var(--border)}
+.p-icon{
+  width:34px;height:34px;flex-shrink:0;
+  border:1px solid var(--accent-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--accent-2);
+  margin-top:1px;
+}
+.p-name{
+  font-family:'Oswald',sans-serif;
+  font-weight:500;font-size:13px;
+  letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--text);margin-bottom:4px;
+}
+.p-desc{font-size:13px;color:var(--text-muted);line-height:1.55}
+
+/* phone mockup */
+.phone-wrap{display:flex;justify-content:center;align-items:center}
+.phone{
+  width:228px;height:420px;
+  border:1.5px solid var(--border);
+  border-radius:30px;
+  background:var(--surface);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 32px 64px rgba(0,0,0,0.5);
+}
+.ph-status{
+  height:36px;background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+}
+.ph-notch{
+  width:72px;height:16px;
+  background:var(--ground);
+  border-radius:0 0 10px 10px;
+}
+.ph-screen{flex:1;padding:14px;display:flex;flex-direction:column;gap:9px}
+.ph-head{
+  font-family:'Oswald',sans-serif;
+  font-size:9px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--accent);
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.ph-card{
+  background:var(--surface-2);
+  border-radius:5px;padding:9px 11px;
+}
+.ph-card-t{
+  font-family:'Oswald',sans-serif;
+  font-size:10px;font-weight:500;
+  letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--text);margin-bottom:3px;
+}
+.ph-card-s{font-size:10px;color:var(--text-muted)}
+.ph-card.hi{background:rgba(201,125,30,0.09);border:1px solid rgba(201,125,30,0.18)}
+.ph-card.hi .ph-card-t{color:var(--accent)}
+.ph-cta{
+  height:34px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--ground);flex-shrink:0;
+}
+
+/* ──────────────────────────────
+   SLIDE 5 — FEATURES
+   ────────────────────────────── */
+.feat-wrap{width:100%;max-width:960px}
+.feat-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:2px;margin-top:44px;
+}
+.feat-card{
+  background:var(--surface);
+  padding:30px 18px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.feat-icon{
+  width:38px;height:38px;
+  border:1px solid var(--accent-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--accent-2);
+  margin-bottom:4px;
+}
+.feat-icon.crisis-icon{
+  border-color:var(--accent);color:var(--accent);
+}
+.feat-card.crisis-card{border-top:2px solid var(--accent)}
+.feat-name{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;font-size:15px;
+  text-transform:uppercase;letter-spacing:0.06em;
+  color:var(--text);
+}
+.feat-desc{font-size:12px;line-height:1.65;color:var(--text-muted)}
+
+/* ──────────────────────────────
+   SLIDE 6 — WEBSITE LINK
+   ────────────────────────────── */
+.web-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:72px;align-items:center;
+  width:100%;max-width:960px;
+}
+.web-copy{display:flex;flex-direction:column;gap:22px}
+.web-visual{display:flex;flex-direction:column;align-items:center;gap:12px}
+
+.browser{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:7px;overflow:hidden;
+}
+.br-bar{
+  height:32px;background:var(--surface-2);
+  display:flex;align-items:center;gap:7px;padding:0 12px;
+}
+.br-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--border);
+}
+.br-url{
+  flex:1;height:18px;background:var(--surface);
+  border-radius:3px;display:flex;align-items:center;
+  padding:0 9px;font-size:9px;
+  font-family:'Lato',monospace;
+  color:var(--text-muted);letter-spacing:0.03em;
+}
+.br-body{background:var(--surface);padding:20px}
+.br-title{
+  font-family:'Oswald',sans-serif;font-weight:700;
+  font-size:16px;text-transform:uppercase;
+  letter-spacing:0.04em;color:var(--text);margin-bottom:12px;
+}
+.br-line{
+  height:7px;background:var(--surface-2);
+  border-radius:2px;margin-bottom:7px;
+}
+.br-line.s{width:58%}
+.br-line.xs{width:38%}
+.br-btn{
+  display:inline-block;margin-top:10px;
+  width:72px;height:24px;background:var(--accent);
+  border-radius:2px;
+}
+
+.sync-rule{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Oswald',sans-serif;font-size:10px;
+  letter-spacing:0.22em;color:var(--text-muted);
+}
+.sync-rule::before,.sync-rule::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
+/* ──────────────────────────────
+   SLIDE 7 — IMPACT
+   ────────────────────────────── */
+.impact-wrap{width:100%;max-width:960px}
+.impact-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-top:44px;
+}
+.impact-card{
+  border:1px solid var(--border);
+  padding:36px 28px;
+  position:relative;
+}
+.impact-card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:2px;height:35%;
+  background:var(--accent);
+}
+.imp-num{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-weight:300;font-style:italic;
+  font-size:clamp(36px,5.5vw,58px);
+  color:var(--text);line-height:1;
+  margin-bottom:10px;
+}
+.imp-label{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--text-muted);
+  line-height:1.55;
+}
+
+/* ──────────────────────────────
+   SLIDE 8 — WHO WE ARE
+   ────────────────────────────── */
+.org-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:start;
+  width:100%;max-width:960px;
+}
+.org-left,.org-right{display:flex;flex-direction:column;gap:22px}
+
+.creds{display:flex;flex-direction:column;border:1px solid var(--border)}
+.cred-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 18px;border-bottom:1px solid var(--border);
+}
+.cred-row:last-child{border-bottom:none}
+.cred-k{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.cred-v{
+  font-size:12px;font-weight:400;
+  color:var(--text);text-align:right;
+}
+
+.team{display:flex;flex-direction:column}
+.leader{
+  display:flex;flex-direction:column;gap:3px;
+  padding:15px 0;border-bottom:1px solid var(--border);
+}
+.leader:first-child{border-top:1px solid var(--border)}
+.l-name{
+  font-family:'Oswald',sans-serif;font-weight:500;
+  font-size:14px;text-transform:uppercase;
+  letter-spacing:0.04em;color:var(--text);
+}
+.l-role{font-size:11px;color:var(--accent-2);letter-spacing:0.07em}
+
+/* ──────────────────────────────
+   SLIDE 9 — THE ASK
+   ────────────────────────────── */
+.ask-wrap{width:100%;max-width:880px}
+.ask-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;margin-top:44px;
+}
+.ask-card{
+  background:var(--surface);padding:36px 32px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.ask-type{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  letter-spacing:0.26em;text-transform:uppercase;
+  color:var(--accent);
+}
+.ask-title{
+  font-family:'Oswald',sans-serif;font-weight:700;
+  font-size:26px;text-transform:uppercase;
+  letter-spacing:0.04em;color:var(--text);
+}
+.ask-detail{
+  font-size:13px;line-height:1.7;color:var(--text-muted);
+}
+
+/* ──────────────────────────────
+   SLIDE 10 — MOVE OUT
+   ────────────────────────────── */
+.cta-wrap{
+  display:flex;flex-direction:column;gap:44px;
+  width:100%;max-width:860px;
+}
+.cta-crisis{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;font-size:clamp(22px,3.5vw,34px);
+  letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--accent);
+}
+.cta-crisis-sub{
+  font-size:13px;color:var(--text-muted);
+  margin-top:4px;font-weight:300;
+}
+.cta-links{
+  display:flex;flex-direction:column;
+  border:1px solid var(--border);
+}
+.cta-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;border-bottom:1px solid var(--border);
+  text-decoration:none;
+  transition:background 0.2s;
+}
+.cta-row:last-child{border-bottom:none}
+.cta-row:hover{background:var(--surface)}
+.cta-row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.cta-lbl{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:4px;
+}
+.cta-val{
+  font-size:14px;font-weight:300;color:var(--text);
+}
+.cta-arrow{font-size:18px;color:var(--accent)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:820px){
+  .slide{padding:40px 24px 100px}
+  .cover-inner{padding:40px 24px 100px}
+  .prob-wrap,.sol-wrap,.web-wrap,.org-wrap{grid-template-columns:1fr;gap:36px}
+  .phone-wrap{display:none}
+  .cycle-grid{grid-template-columns:1fr}
+  .cycle-cell::after{display:none}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .impact-grid{grid-template-columns:1fr;gap:2px}
+  .ask-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .feat-grid{grid-template-columns:1fr}
+  .stat-big{font-size:80px}
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ══ SLIDE 1 · COVER ══ -->
+  <section class="slide active" id="s1" aria-label="Cover">
+    <canvas id="topo" aria-hidden="true"></canvas>
+    <div class="cover-inner">
+      <div class="cover-org">S.U.A.S. Veteran Crisis QRF &nbsp;·&nbsp; Los Altos, CA &nbsp;·&nbsp; 501(c)(3)</div>
+      <h1 class="cover-h">
+        The mission<br>doesn't end<br>at <em>discharge.</em>
+      </h1>
+      <p class="cover-sub">
+        Introducing the SUAS QRF App — a veteran-first platform that replaces the silence of discharge with squad, structure, and belonging.
+      </p>
+      <div class="cover-tag">
+        <span class="cover-dot"></span>
+        App Pitch Deck &nbsp;·&nbsp; 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 2 · THE PROBLEM ══ -->
+  <section class="slide" id="s2" aria-label="The problem">
+    <div class="prob-wrap">
+      <div>
+        <div class="stat-big" aria-label="17">17</div>
+        <div class="stat-unit">Veterans lost to suicide<br>every single day</div>
+        <div class="stat-source">VA National Veteran Suicide Prevention Annual Report</div>
+      </div>
+      <div class="prob-copy">
+        <div class="eyebrow">The problem</div>
+        <blockquote class="prob-quote">
+          "The enemy after discharge isn't foreign. It's waking up with no formation, no unit, no mission."
+        </blockquote>
+        <p class="body">
+          <strong>1 in 3 veterans</strong> report significant social isolation post-service. The highest-risk window is the first two years after discharge — and no standard of care reaches them where they are.
+        </p>
+        <p class="body">
+          Crisis hotlines help at the edge. They don't prevent the months of silence that leads there.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 3 · THE CYCLE ══ -->
+  <section class="slide" id="s3" aria-label="The isolation cycle">
+    <div class="cycle-wrap">
+      <div class="eyebrow">How isolation compounds</div>
+      <h2 class="disp disp-lg">The cycle<br>that kills.</h2>
+      <div class="cycle-grid">
+        <div class="cycle-cell">
+          <div class="cycle-n">01 &nbsp;—&nbsp; TRIGGER</div>
+          <div class="cycle-title">Discharge</div>
+          <div class="cycle-body">The unit dissolves. Years of structure, identity, and belonging disappear overnight. There is no offboarding from war.</div>
+        </div>
+        <div class="cycle-cell">
+          <div class="cycle-n">02 &nbsp;—&nbsp; COMPOUND</div>
+          <div class="cycle-title">Silence</div>
+          <div class="cycle-body">No squad. No formation. Civilian peers don't understand. Reaching out feels like admitting defeat.</div>
+        </div>
+        <div class="cycle-cell">
+          <div class="cycle-n">03 &nbsp;—&nbsp; CRISIS</div>
+          <div class="cycle-title">Alone</div>
+          <div class="cycle-body">Isolation deepens into depression. By the time crisis arrives, the veteran has already been unreachable for months.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 4 · THE SOLUTION ══ -->
+  <section class="slide" id="s4" aria-label="The solution">
+    <div class="sol-wrap">
+      <div class="sol-copy">
+        <div class="eyebrow">The solution</div>
+        <div class="sol-tagline">
+          Your unit,<br><strong>in your pocket.</strong>
+        </div>
+        <p class="body">
+          The SUAS QRF App is the mobile companion to <strong>suasqrf.org</strong> — veteran-first, built for the way veterans actually live: peer connection, shared events, and immediate crisis access, all in one place.
+        </p>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="p-icon">◈</div>
+            <div>
+              <div class="p-name">Connect</div>
+              <div class="p-desc">Peer-matched with veterans who've been there — same branch, same era, same struggle.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="p-icon">◉</div>
+            <div>
+              <div class="p-name">Gather</div>
+              <div class="p-desc">Find events near you. Cookouts, hikes, surf sessions — RSVP in two taps.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="p-icon" style="border-color:var(--accent);color:var(--accent)">!</div>
+            <div>
+              <div class="p-name">Respond</div>
+              <div class="p-desc">988 always one tap away. No buried menus. No hunting. Just there.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-wrap" aria-hidden="true">
+        <div class="phone">
+          <div class="ph-status"><div class="ph-notch"></div></div>
+          <div class="ph-screen">
+            <div class="ph-head">QRF &nbsp;·&nbsp; Good morning, Sergeant.</div>
+            <div class="ph-card">
+              <div class="ph-card-t">Your Squad</div>
+              <div class="ph-card-s">3 veterans near you · active now</div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-t">Next Stand-Down</div>
+              <div class="ph-card-s">Cookout · Fort Hunter Liggett · Sat</div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-t">Mission Feed</div>
+              <div class="ph-card-s">4 new posts · hiking crew forming</div>
+            </div>
+            <div class="ph-card hi">
+              <div class="ph-card-t">Resources</div>
+              <div class="ph-card-s">Benefits · Housing · Mental health</div>
+            </div>
+          </div>
+          <div class="ph-cta">988 · PRESS 1 · CRISIS LINE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 5 · FEATURES ══ -->
+  <section class="slide" id="s5" aria-label="Features">
+    <div class="feat-wrap">
+      <div class="eyebrow">What it does</div>
+      <h2 class="disp disp-lg">Five pillars.</h2>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon">⬡</div>
+          <div class="feat-name">Peer Connect</div>
+          <div class="feat-desc">Match by branch, era, and situation. Real conversations — not a helpline, not a forum. A squad.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">◎</div>
+          <div class="feat-name">Event Finder</div>
+          <div class="feat-desc">BBQs, camping, hunting, surfing, skydiving. Find what's near you. RSVP instantly.</div>
+        </div>
+        <div class="feat-card crisis-card">
+          <div class="feat-icon crisis-icon">▲</div>
+          <div class="feat-name">Crisis Line</div>
+          <div class="feat-desc">Persistent 988 shortcut at the bottom of every screen. One tap. No friction. Always on.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">≡</div>
+          <div class="feat-name">Resource Nav</div>
+          <div class="feat-desc">Benefits, housing, mental health — filtered to your situation. No VA maze required.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">↻</div>
+          <div class="feat-name">Mission Feed</div>
+          <div class="feat-desc">Live updates from the SUAS community and website. The unit stays loud.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 6 · WEBSITE CONNECTION ══ -->
+  <section class="slide" id="s6" aria-label="Website connection">
+    <div class="web-wrap">
+      <div class="web-copy">
+        <div class="eyebrow">The ecosystem</div>
+        <h2 class="disp disp-lg">Same community.<br>Every screen.</h2>
+        <p class="body">
+          The SUAS website at <strong>suasqrf.org</strong> is the home base — credibility, content, organization. The app is the field unit. They share one event calendar, one community feed, and one mission.
+        </p>
+        <p class="body">
+          A veteran finds SUAS on Facebook or Google, lands on the site, and downloads the app. App users volunteer, donate, and share — driving traffic back. The loop closes. No veteran falls through the gap between screens.
+        </p>
+      </div>
+      <div class="web-visual" aria-hidden="true">
+        <div class="browser">
+          <div class="br-bar">
+            <div class="br-dot"></div>
+            <div class="br-dot"></div>
+            <div class="br-dot"></div>
+            <div class="br-url">suasqrf.org</div>
+          </div>
+          <div class="br-body">
+            <div class="br-title">S.U.A.S. Veteran Crisis QRF</div>
+            <div class="br-line"></div>
+            <div class="br-line s"></div>
+            <div class="br-line xs"></div>
+            <div class="br-btn"></div>
+          </div>
+        </div>
+        <div class="sync-rule">SYNC</div>
+        <div class="phone" style="width:160px;height:260px" aria-hidden="true">
+          <div class="ph-status"><div class="ph-notch" style="width:60px;height:14px"></div></div>
+          <div class="ph-screen" style="padding:11px;gap:8px">
+            <div class="ph-head" style="font-size:8px">SUAS QRF App</div>
+            <div class="ph-card" style="padding:8px 10px">
+              <div class="ph-card-t" style="font-size:9px">Stand-Down synced</div>
+              <div class="ph-card-s" style="font-size:9px">Cookout · Fort Hunter</div>
+            </div>
+            <div class="ph-card" style="padding:8px 10px">
+              <div class="ph-card-t" style="font-size:9px">New member via site</div>
+              <div class="ph-card-s" style="font-size:9px">3 mutual squad members</div>
+            </div>
+          </div>
+          <div class="ph-cta" style="font-size:9px;height:28px">988 · PRESS 1</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 7 · IMPACT ══ -->
+  <section class="slide" id="s7" aria-label="Impact">
+    <div class="impact-wrap">
+      <div class="eyebrow">What success looks like</div>
+      <h2 class="disp disp-lg">The mission,<br>measured.</h2>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="imp-num">500+</div>
+          <div class="imp-label">Veterans connected<br>in year one</div>
+        </div>
+        <div class="impact-card">
+          <div class="imp-num">50+</div>
+          <div class="imp-label">Stand-down events<br>organized and attended</div>
+        </div>
+        <div class="impact-card">
+          <div class="imp-num">1 tap</div>
+          <div class="imp-label">To reach 988<br>from anywhere in the app</div>
+        </div>
+      </div>
+      <p class="body" style="margin-top:32px;max-width:620px">
+        The app doesn't replace SUAS's human work. It <strong>scales it</strong> — so one coordinator can support ten times as many veterans as before.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 8 · WHO WE ARE ══ -->
+  <section class="slide" id="s8" aria-label="Who we are">
+    <div class="org-wrap">
+      <div class="org-left">
+        <div class="eyebrow">Who we are</div>
+        <h2 class="disp disp-md">Built on the ground.<br>Running since 2022.</h2>
+        <p class="body">
+          SUAS is not a startup. We are an <strong>operating nonprofit</strong> with a track record — events run, veterans reached, community built. This app scales what already works.
+        </p>
+        <div class="creds">
+          <div class="cred-row"><div class="cred-k">Legal name</div><div class="cred-v">S.U.A.S. Veteran Crisis QRF</div></div>
+          <div class="cred-row"><div class="cred-k">Status</div><div class="cred-v">501(c)(3) Public Charity</div></div>
+          <div class="cred-row"><div class="cred-k">EIN</div><div class="cred-v">88-3249428</div></div>
+          <div class="cred-row"><div class="cred-k">Founded</div><div class="cred-v">July 8, 2022</div></div>
+          <div class="cred-row"><div class="cred-k">HQ</div><div class="cred-v">Los Altos, CA</div></div>
+          <div class="cred-row"><div class="cred-k">Deductibility</div><div class="cred-v">IRC Section 170</div></div>
+        </div>
+      </div>
+      <div class="org-right">
+        <div class="eyebrow">Leadership</div>
+        <div class="team">
+          <div class="leader">
+            <div class="l-name">Jacob Sterling Silver</div>
+            <div class="l-role">Founder / Director / Asst. CFO</div>
+          </div>
+          <div class="leader">
+            <div class="l-name">Mary Frances Declercq</div>
+            <div class="l-role">Chief Executive Officer</div>
+          </div>
+          <div class="leader">
+            <div class="l-name">Jose Alcantar</div>
+            <div class="l-role">Chief Financial Officer</div>
+          </div>
+          <div class="leader">
+            <div class="l-name">Glen Cederholm</div>
+            <div class="l-role">Vice President</div>
+          </div>
+          <div class="leader">
+            <div class="l-name">Brant Cassidy Rigden Creamer</div>
+            <div class="l-role">Secretary</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 9 · THE ASK ══ -->
+  <section class="slide" id="s9" aria-label="The ask">
+    <div class="ask-wrap">
+      <div class="eyebrow">What we need</div>
+      <h2 class="disp disp-lg">Join the QRF.</h2>
+      <div class="ask-grid">
+        <div class="ask-card">
+          <div class="ask-type">Financial</div>
+          <div class="ask-title">Fund It</div>
+          <div class="ask-detail">Donations fund app development, server infrastructure, and event programming. Fully tax-deductible under IRC Section 170. Sponsor recognition on app and site.</div>
+        </div>
+        <div class="ask-card">
+          <div class="ask-type">Technical</div>
+          <div class="ask-title">Build It</div>
+          <div class="ask-detail">iOS, Android, backend engineers, and UX designers who want to put their skills toward something real. Pro bono or contract.</div>
+        </div>
+        <div class="ask-card">
+          <div class="ask-type">Organizational</div>
+          <div class="ask-title">Partner</div>
+          <div class="ask-detail">VA hospitals, VSOs, military installations. We need distribution partners who can connect us to the veterans who need us before crisis arrives.</div>
+        </div>
+        <div class="ask-card">
+          <div class="ask-type">Community</div>
+          <div class="ask-title">Show Up</div>
+          <div class="ask-detail">Event organizers, peer counselors, drivers, cooks, guides. The app scales the logistics — people make it real. Veterans and civilians both.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 10 · MOVE OUT ══ -->
+  <section class="slide" id="s10" aria-label="Call to action">
+    <div class="cta-wrap">
+      <div>
+        <div class="eyebrow">Shut up and serve</div>
+        <h2 class="disp disp-xl">Move out.</h2>
+      </div>
+      <div>
+        <div class="cta-crisis">988 · Press 1</div>
+        <div class="cta-crisis-sub">Veterans Crisis Line — always on, always first.</div>
+      </div>
+      <div class="cta-links">
+        <a href="https://s-u-a-s-veteran-crisis-qrf.github.io/help/" class="cta-row" target="_blank" rel="noopener">
+          <div>
+            <div class="cta-lbl">Website</div>
+            <div class="cta-val">suasqrf.org</div>
+          </div>
+          <div class="cta-arrow">→</div>
+        </a>
+        <a href="https://www.gofundme.com/f/support-our-heroes-combating-veteran-isolation" class="cta-row" target="_blank" rel="noopener">
+          <div>
+            <div class="cta-lbl">Donate</div>
+            <div class="cta-val">GoFundMe — Support Our Heroes</div>
+          </div>
+          <div class="cta-arrow">→</div>
+        </a>
+        <a href="mailto:jacobsilver@suasqrf.org" class="cta-row">
+          <div>
+            <div class="cta-lbl">Contact</div>
+            <div class="cta-val">jacobsilver@suasqrf.org &nbsp;·&nbsp; (925) 727-6109</div>
+          </div>
+          <div class="cta-arrow">→</div>
+        </a>
+        <a href="https://www.facebook.com/suasqrf/" class="cta-row" target="_blank" rel="noopener">
+          <div>
+            <div class="cta-lbl">Community</div>
+            <div class="cta-val">Facebook — @suasqrf</div>
+          </div>
+          <div class="cta-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- .deck -->
+
+<!-- ── FIXED CHROME ── -->
+<footer class="crisis-bar" role="contentinfo">
+  <span>S.U.A.S. Veteran Crisis QRF &nbsp;·&nbsp; EIN 88-3249428 &nbsp;·&nbsp; 501(c)(3)</span>
+  <a href="tel:988">&#9873; CRISIS: DIAL 988 · PRESS 1</a>
+  <span id="counter">1 / 10</span>
+</footer>
+
+<nav class="dots" aria-label="Slide navigation"></nav>
+
+<button class="arr arr-l dim" id="prev" aria-label="Previous slide">&#8592;</button>
+<button class="arr arr-r" id="next" aria-label="Next slide">&#8594;</button>
+
+<script>
+/* ── TOPOGRAPHIC CANVAS ── */
+(function(){
+  const canvas = document.getElementById('topo');
+  const ctx = canvas.getContext('2d');
+  let W, H, lines, raf, t = 0;
+
+  function init(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    lines = Array.from({length:16}, (_,i) => ({
+      y: (H / 16) * i + H * 0.03,
+      a1: 28 + Math.random() * 55,
+      a2: 12 + Math.random() * 22,
+      a3: 6  + Math.random() * 14,
+      f1: 0.0007 + Math.random() * 0.001,
+      f2: 0.0016 + Math.random() * 0.002,
+      f3: 0.004  + Math.random() * 0.003,
+      ph1: Math.random() * Math.PI * 2,
+      ph2: Math.random() * Math.PI * 2,
+      ph3: Math.random() * Math.PI * 2,
+      sp:  0.00025 + Math.random() * 0.0003,
+      op:  0.055 + Math.random() * 0.09,
+    }));
+  }
+
+  function render(){
+    ctx.clearRect(0, 0, W, H);
+    t++;
+    lines.forEach(l => {
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(95,126,80,' + l.op + ')';
+      ctx.lineWidth = 1;
+      let first = true;
+      for(let x = -10; x <= W + 10; x += 3){
+        const y = l.y
+          + Math.sin(x * l.f1 + l.ph1 + t * l.sp) * l.a1
+          + Math.sin(x * l.f2 + l.ph2 + t * l.sp * 0.55) * l.a2
+          + Math.sin(x * l.f3 + l.ph3 + t * l.sp * 0.28) * l.a3;
+        first ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        first = false;
+      }
+      ctx.stroke();
+    });
+    raf = requestAnimationFrame(render);
+  }
+
+  init();
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    init();
+    if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches) render();
+    else staticRender();
+  });
+
+  function staticRender(){
+    ctx.clearRect(0,0,W,H);
+    lines.forEach(l => {
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(95,126,80,' + l.op + ')';
+      ctx.lineWidth = 1;
+      let first = true;
+      for(let x = -10; x <= W + 10; x += 3){
+        const y = l.y
+          + Math.sin(x * l.f1 + l.ph1) * l.a1
+          + Math.sin(x * l.f2 + l.ph2) * l.a2
+          + Math.sin(x * l.f3 + l.ph3) * l.a3;
+        first ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        first = false;
+      }
+      ctx.stroke();
+    });
+  }
+
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    staticRender();
+  } else {
+    render();
+  }
+})();
+
+/* ── NAVIGATION ── */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const N = slides.length;
+let cur = 0;
+
+const dotsEl = document.querySelector('.dots');
+const counter = document.getElementById('counter');
+const btnPrev = document.getElementById('prev');
+const btnNext = document.getElementById('next');
+
+slides.forEach((_,i) => {
+  const b = document.createElement('button');
+  b.className = 'dot' + (i === 0 ? ' on' : '');
+  b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+  b.addEventListener('click', () => go(i));
+  dotsEl.appendChild(b);
+});
+
+function go(n){
+  if(n < 0 || n >= N || n === cur) return;
+  slides[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  sync();
+}
+
+function sync(){
+  dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('on', i === cur));
+  counter.textContent = (cur+1) + ' / ' + N;
+  btnPrev.classList.toggle('dim', cur === 0);
+  btnNext.classList.toggle('dim', cur === N-1);
+}
+
+btnPrev.addEventListener('click', () => go(cur - 1));
+btnNext.addEventListener('click', () => go(cur + 1));
+
+document.addEventListener('keydown', e => {
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){ e.preventDefault(); go(cur+1); }
+  if(['ArrowLeft','ArrowUp'].includes(e.key)){        e.preventDefault(); go(cur-1); }
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) > 48) go(cur + (dx < 0 ? 1 : -1));
+}, {passive:true});
+
+sync();
+</script>
+</body>
+</html>
