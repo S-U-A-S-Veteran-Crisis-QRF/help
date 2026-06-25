@@ -1,0 +1,45 @@
+name = "suas-news-bot"
+main = "src/index.ts"
+compatibility_date = "2026-05-01"
+
+[[kv_namespaces]]
+binding = "SUAS_NEWS_SEEN"
+id = "<seen-namespace-id>"
+
+[[kv_namespaces]]
+binding = "SUAS_NEWS_WATCH"
+id = "<watch-namespace-id>"
+
+[[r2_buckets]]
+binding = "SUAS_BRIEFS"
+bucket_name = "suas-briefs"
+
+[[durable_objects.bindings]]
+name = "SUAS_NEWS_RUN_LEDGER"
+class_name = "RunLedger"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["RunLedger"]
+
+[browser]
+binding = "BROWSER"
+
+[triggers]
+# Cron Triggers execute on UTC time (Cloudflare docs).
+# Both PDT and PST offsets registered; handler exits early if local hour != expected.
+# Free plan: 5 cron triggers per account total. These 4 fit; upgrade to Paid if more are needed.
+crons = [
+  "0 13 * * 1-5",  # 13:00 UTC = 06:00 PDT weekdays (Mar–Nov)
+  "0 14 * * 1-5",  # 14:00 UTC = 06:00 PST weekdays (Nov–Mar)
+  "0 23 * * 5",    # 23:00 UTC = 16:00 PDT Friday
+  "0 0  * * 6"     # 00:00 UTC Sat = 16:00 PST Friday
+]
+
+[vars]
+SUAS_TZ = "America/Los_Angeles"
+ANTHROPIC_MODEL_CLASSIFY = "claude-haiku-4-5-20251001"
+ANTHROPIC_MODEL_SYNTH = "claude-sonnet-4-6"
+MCP_ENDPOINT = "http://localhost:8080/v1/ingest"
+SLACK_CHANNEL_ID = "#ai-intel"
+FOUNDER_EMAIL = "jacobsilver@suasqrf.org"

@@ -1,0 +1,22 @@
+{
+  "name": "suas-news-bot",
+  "version": "1.0.0",
+  "description": "SUAS AI Frontier-Seven Monitoring Bot — Cloudflare Worker",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "dev:scheduled": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.29.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260522.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^3.60.0"
+  }
+}
