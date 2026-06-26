@@ -1,11 +1,13 @@
 # S.U.A.S. Veteran Crisis QRF — Project Context
 
-This file is auto-loaded by Claude Code in every session on this repo. It exists so any Claude session — and any human contributor — has full project context immediately, without the user having to re-explain anything.
+This file is auto-loaded by Claude Code in every session on this repo. It exists so any Claude session — and any human contributor — has full project context immediately, without the user having to repeat it.
 
 ## Who We Are
 
-**S.U.A.S. Veteran Crisis QRF** ("Shut Up And Serve" Veteran Crisis Quick Reaction Force) is an IRS-recognized 501(c)(3) public charity headquartered in Los Altos, California. We exist to combat veteran isolation through peer support and community events.
+**S.U.A.S. Veteran Crisis QRF** ("Shut Up And Serve" Veteran Crisis Quick Reaction Force) is an IRS-recognized 501(c)(3) public charity headquartered in Los Altos, California. We exist to combat veteran isolation through peer support, community events, and crisis prevention.
 
+### Organization
+- **Legal name**: S.U.A.S. Veteran Crisis QRF, Inc.
 - **EIN**: 88-3249428
 - **IRS classification**: 501(c)(3) public charity, 170(b)(1)(A)(vi)
 - **Founded**: July 8, 2022
@@ -29,9 +31,9 @@ This file is auto-loaded by Claude Code in every session on this repo. It exists
 
 | System | What it is | Status |
 |---|---|---|
-| `suasqrf.org` | Primary public domain | Currently down — DNS not pointing anywhere |
-| GitHub Pages (`s-u-a-s-veteran-crisis-qrf.github.io/help`) | Replacement landing site, built from this repo | Configured via `.github/workflows/pages.yml` |
-| `sites.google.com/view/suausqrf/home` | Old Google Site | Reportedly inoperative |
+| `suasqrf.org` | Primary public domain | Live — GitHub Pages via CNAME |
+| GitHub Pages (`s-u-a-s-veteran-crisis-qrf.github.io/help`) | Backup public-facing site | Active via `.github/workflows/pages.yml` |
+| `sites.google.com/view/suausqrf/home` | Old Google Site | Not currently used |
 | Google Workspace (Google for Nonprofits) | Email, Drive, Calendar | Active |
 | `jacobsilver@suasqrf.org` | Founder/director email | Active |
 | Facebook page + community group | Public-facing presence | Active |
@@ -47,7 +49,11 @@ This file is auto-loaded by Claude Code in every session on this repo. It exists
 - `RUNBOOK.md` — step-by-step playbooks for common tech tasks
 - `AGENT_LINKS.md` — vetted Claude/MCP ecosystem links
 - `CONTRIBUTING.md` — onboarding for outside contributors
-- `.claude/agents/suas-tech.md` — specialized tech-support subagent
+- `dashboard.md` — director's quick-action surface (live at `/help/dashboard/`)
+- `.claude/agents/suas-tech.md` — specialized tech-support subagent (reactive)
+- `.claude/agents/suas-project-finisher.md` — director-level autonomous project finisher (proactive — drives backlog to done)
+- `.claude/skills/suas-bootstrap/SKILL.md` — auto-bootstrap skill loaded into every agent
+- `.claude/settings.json` + `.claude/hooks/suas-session-start.sh` — SessionStart hook (loads SUAS context + fetches gstack)
 
 ### Branch + PR conventions
 - Default branch: `main`
