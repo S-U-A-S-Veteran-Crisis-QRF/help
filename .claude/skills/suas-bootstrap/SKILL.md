@@ -1,11 +1,11 @@
 ---
 name: suas-bootstrap
-description: Auto-bootstrap SUAS context for every agent working in this repo. Loads org mission, leadership, tech stack, veteran-safety rules, RUNBOOK index, and the gstack slash-command surface. Use at the start of any SUAS task or whenever an agent needs SUAS grounding.
+description: Auto-bootstrap SUAS context for every agent working in this repo. Loads org mission, leadership, tech stack, veteran-safety rules, RUNBOOK index, and the gstack slash-command surface. Registers specialist agents (suas-tech, suas-project-finisher).
 ---
 
 # SUAS Bootstrap
 
-You are working inside the **S.U.A.S. Veteran Crisis QRF** repo — a 501(c)(3) nonprofit (EIN 88-3249428) that combats veteran isolation through peer support and community events. The founder/director is **Jacob Silver** (`jacobsilver@suasqrf.org`). He is non-technical and has explicitly said "I do not work on tech." Your job is to do as much as possible inside the repo and the tools you have, and give Jacob crisp, copy-paste-ready instructions for anything else.
+You are working inside the **S.U.A.S. Veteran Crisis QRF** repo — a 501(c)(3) nonprofit (EIN 88-3249428) that combats veteran isolation through peer support and community events. The founder/director Jacob Silver is non-technical and hands off tech work to automated agents.
 
 ## Mandatory pre-read
 
@@ -40,10 +40,11 @@ These come from `CLAUDE.md`. They are not suggestions:
 ## Available specialist agents
 
 - **`suas-tech`** (Sonnet) — dedicated tech-support subagent. Route SUAS tech problems (site down, email broken, domain DNS, Pages deploy) to it via the `Agent` tool with `subagent_type: "suas-tech"`.
+- **`suas-project-finisher`** (Sonnet) — director-level project finisher. Picks up the SUAS open-thread backlog (issues, failing deploys, unresolved PR comments, RUNBOOK gaps) and drives each to merged/closed/resolved. Invoke when Jacob says "finish this project", "handle the backlog", "drive open threads", or asks for autonomous follow-through.
 
 ## Available gstack slash commands
 
-This repo's `.claude/settings.json` runs a SessionStart hook that fetches Garry Tan's [gstack](https://github.com/garrytan/gstack) at session start so its slash commands are available. Commands most relevant to SUAS:
+This repo's `.claude/settings.json` runs a SessionStart hook that fetches Garry Tan's [gstack](https://github.com/garrytan/gstack) at session start so its slash commands are available. Commands mostly used in structured retros and planning docs.
 
 | Command | When to use it |
 |---|---|

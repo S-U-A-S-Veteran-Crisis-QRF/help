@@ -11,5 +11,5 @@ vendor/
 Gemfile
 Gemfile.lock
 
-# One-off render artifacts (dashboard previews etc.)
+# One-off render artifacts
 _preview_*
