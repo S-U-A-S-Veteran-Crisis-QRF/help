@@ -27,6 +27,7 @@ sitemap: false
 | Manage Facebook | [Page](https://www.facebook.com/suasqrf/) · [Group](https://www.facebook.com/groups/451663376808281/) |
 | Fix a tech problem | [RUNBOOK](./RUNBOOK.md) |
 | Update site content | Edit [`index.md`](https://github.com/S-U-A-S-Veteran-Crisis-QRF/help/blob/main/index.md) on GitHub |
+| See every active project | [Projects status board](./PROJECTS.md) |
 
 ---
 
