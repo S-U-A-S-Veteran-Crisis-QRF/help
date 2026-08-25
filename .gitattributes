@@ -1,0 +1,6 @@
+# Windows batch files must keep CRLF line endings in the stored blob.
+# cmd.exe can fail to resolve `goto :label` / `call :label` in a file with
+# LF-only endings, and these scripts are downloaded straight from GitHub
+# raw URLs, which serve the blob as-is. `-text` disables normalization so
+# the CRLF bytes committed here survive to the download.
+*.bat -text
