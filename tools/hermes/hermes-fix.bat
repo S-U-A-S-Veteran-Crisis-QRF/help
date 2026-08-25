@@ -169,7 +169,7 @@ REM  Still broken - hand off with clear next steps
 REM ===============================================================
 echo.
 echo  ---------------------------------------------------------------
-echo   Still failing after both repairs.
+echo   Still failing after all three repairs.
 echo  ---------------------------------------------------------------
 echo.
 echo   That means Windows itself is damaged more deeply. Next steps,
