@@ -13,6 +13,7 @@ Plain-language playbooks for common technical issues. Use this as a checklist wh
 5. [Update the public landing page](#5-update-the-public-landing-page)
 6. [Add a contributor / give someone repo access](#6-add-a-contributor)
 7. [Escalation contacts](#7-escalation-contacts)
+8. [Fix Hermes (desktop agent won't start)](#8-fix-hermes-desktop-agent-wont-start)
 
 ---
 
@@ -173,6 +174,61 @@ When you need a human:
 | GitHub support | https://support.github.com |
 | Charity legal/IRS questions | The CPA or attorney listed in SUAS records (not in this repo) |
 | Crisis intervention for a veteran | **988 → press 1** (Veterans Crisis Line) |
+
+---
+
+## 8. Fix Hermes (desktop agent won't start)
+
+**Symptom.** The Hermes desktop app on the Windows machine never finishes starting. The log repeats:
+
+```
+[boot] Desktop boot failed: Could not persist ownership for the Hermes backend:
+Command failed: powershell.exe -NoProfile -NonInteractive -Command ...
+The shell cannot be started. A failure occurred during initialization:
+The type initializer for 'System.Net.ServicePointManager' threw an exception.
+```
+
+It retries, auto-repairs, fails the same way, and gives up after three attempts.
+
+### What's actually wrong
+
+**Windows PowerShell is broken — Hermes is just the app that noticed.**
+
+Hermes starts its backend successfully, then runs `powershell.exe` to read that process's start time so it can remember which process it owns. PowerShell won't start, so that step fails, and Hermes treats the failure as fatal.
+
+The failure happens even with `-NoProfile`, which rules out the PowerShell profile and points at machine-level .NET configuration. Two usual culprits:
+
+1. A corrupt or truncated `machine.config` (the .NET settings file Windows ships).
+2. A `SchUseStrongCrypto` or `SystemDefaultTlsVersions` registry value written with the wrong type (text instead of number).
+
+If it breaks **more than once**, something is rewriting those settings repeatedly — usually a VPN, antivirus, or corporate proxy tool.
+
+### Fix (about 5 minutes)
+
+The repair scripts are in `tools/hermes/`. They're `.bat` files on purpose: you can't use PowerShell to repair PowerShell.
+
+1. Download both files from the repo to the Windows machine's Desktop:
+   - `tools/hermes/hermes-diagnose.bat`
+   - `tools/hermes/hermes-fix.bat`
+2. Double-click **`hermes-diagnose.bat`**. It changes nothing and writes `hermes-report.txt` to the Desktop. It will say whether PowerShell is the problem.
+3. If it confirms PowerShell is broken: right-click **`hermes-fix.bat`** → **Run as administrator**.
+4. The fix script backs everything up to the Desktop, then tries the least invasive repair first (registry values), retests, and only touches `machine.config` if it has to — and only after you type `YES`.
+5. When it reports success, start Hermes.
+
+### If the fix script can't do it
+
+It will print these, in order, for an Administrator Command Prompt:
+
+1. `sfc /scannow`
+2. `DISM /Online /Cleanup-Image /RestoreHealth`
+3. Reboot, run `hermes-fix.bat` again.
+4. Reinstall .NET Framework 4.8 from Microsoft, reboot, run it again.
+
+### Worth reporting upstream
+
+This is also a Hermes bug: reading a process start time is a convenience, not a requirement, and failing to read it shouldn't block boot. A reasonable bug report:
+
+> Hermes fails to boot when `powershell.exe` cannot start on the host. `claimBackendChild` treats the start-time lookup as fatal and aborts, even though the backend process started successfully. Suggested fix: degrade gracefully when the ownership probe fails, rather than failing the boot.
 
 ---
 
