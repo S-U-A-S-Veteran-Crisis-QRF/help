@@ -14,7 +14,8 @@ REM
 REM  Order of operations - least invasive first, retesting between
 REM  each step, and it STOPS as soon as PowerShell works again:
 REM      Step A: repair malformed .NET TLS registry values
-REM      Step B: restore machine.config from the clean default
+REM      Step B: set aside a non-standard powershell.exe.config
+REM      Step C: restore machine.config from the clean default
 REM              (only with typed confirmation, always after backup)
 REM
 REM  Everything replaced is backed up to your Desktop first.
@@ -102,10 +103,38 @@ if "%FIXEDREG%"=="0" (
 echo.
 
 REM ===============================================================
-REM  STEP B - restore machine.config from the clean default
+REM  STEP B - set aside a non-standard powershell.exe.config
 REM ===============================================================
 echo  ---------------------------------------------------------------
-echo   Step B: restore machine.config from Windows' clean default
+echo   Step B: checking for a non-standard powershell.exe.config
+echo  ---------------------------------------------------------------
+
+set "MOVEDCFG=0"
+call :stashpsconfig "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe.config" 64-bit
+call :stashpsconfig "%SystemRoot%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe.config" 32-bit
+
+if "%MOVEDCFG%"=="0" (
+  echo   None found. Nothing to do here.
+) else (
+  echo.
+  echo   Set aside. Retesting PowerShell...
+  call :testps
+  if "!PSCODE!"=="0" (
+    echo.
+    echo   FIXED. PowerShell starts again - that file was the problem.
+    goto :success
+  )
+  echo   Still failing. Putting those files back and moving on to Step C.
+  call :unstashpsconfig "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe.config" 64-bit
+  call :unstashpsconfig "%SystemRoot%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe.config" 32-bit
+)
+echo.
+
+REM ===============================================================
+REM  STEP C - restore machine.config from the clean default
+REM ===============================================================
+echo  ---------------------------------------------------------------
+echo   Step C: restore machine.config from Windows' clean default
 echo  ---------------------------------------------------------------
 echo.
 echo   This replaces the .NET machine.config files with the untouched
@@ -119,7 +148,7 @@ set "GO="
 set /p "GO=  Type YES and press Enter to continue (anything else quits): "
 if /i not "%GO%"=="YES" (
   echo.
-  echo   Cancelled. Nothing in Step B was changed.
+  echo   Cancelled. Nothing in Step C was changed.
   echo   Registry backups are still in: %BACKUP%
   echo.
   pause
@@ -197,6 +226,34 @@ echo   BAD: %V% has the wrong type. Rewriting it as REG_DWORD 1.
 reg delete "%K%" /v %V% /f >nul 2>&1
 reg add "%K%" /v %V% /t REG_DWORD /d 1 /f >nul 2>&1
 set "FIXEDREG=1"
+goto :eof
+
+REM  :stashpsconfig  <powershell.exe.config path>  <label>
+REM  Windows does not ship a powershell.exe.config. If one exists, some
+REM  other tool added it, and a malformed one breaks PowerShell startup
+REM  in exactly this way. Move it aside rather than deleting it.
+:stashpsconfig
+set "F=%~1"
+set "L=%~2"
+if not exist "%F%" goto :eof
+echo   Found a non-standard config ^(%L%^).
+copy /y "%F%" "%BACKUP%\powershell.exe.config.%L%.bak" >nul 2>&1
+move /y "%F%" "%F%.hermes-disabled" >nul 2>&1
+if errorlevel 1 (
+  echo   %L%: could not move it aside.
+) else (
+  echo   %L%: moved aside.
+  set "MOVEDCFG=1"
+)
+goto :eof
+
+REM  :unstashpsconfig  <powershell.exe.config path>  <label>
+:unstashpsconfig
+set "F=%~1"
+set "L=%~2"
+if not exist "%F%.hermes-disabled" goto :eof
+move /y "%F%.hermes-disabled" "%F%" >nul 2>&1
+if not errorlevel 1 echo   %L%: original config put back.
 goto :eof
 
 REM  :restorecfg  <machine.config path>  <label>

@@ -56,6 +56,14 @@ call :checkcfg "%CFG64%\machine.config" 64-bit
 call :checkcfg "%CFG32%\machine.config" 32-bit
 >>"%REPORT%" echo.
 
+REM ---------- 2b. stray powershell.exe.config ----------
+>>"%REPORT%" echo ===== 2b. powershell.exe.config =====
+>>"%REPORT%" echo Windows does not ship this file. If it exists, another tool added
+>>"%REPORT%" echo it, and a malformed one breaks PowerShell startup.
+call :checkpscfg "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe.config" 64-bit
+call :checkpscfg "%SystemRoot%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe.config" 32-bit
+>>"%REPORT%" echo.
+
 REM ---------- 3. .NET TLS registry values ----------
 echo [3/5] Checking .NET TLS registry values...
 >>"%REPORT%" echo ===== 3. .NET Framework TLS registry values =====
@@ -117,6 +125,15 @@ echo  ---------------------------------------------------------------
 echo.
 pause
 exit /b 0
+
+REM ---------- helper: look for a stray powershell.exe.config ----------
+:checkpscfg
+if exist "%~1" (
+  for %%A in ("%~1") do >>"%REPORT%" echo %~2: PRESENT - %%~zA bytes, modified %%~tA  ^(SUSPECT^)
+) else (
+  >>"%REPORT%" echo %~2: not present ^(normal^)
+)
+goto :eof
 
 REM ---------- helper: sanity-check one machine.config ----------
 :checkcfg

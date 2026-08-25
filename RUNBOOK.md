@@ -13,7 +13,7 @@ Plain-language playbooks for common technical issues. Use this as a checklist wh
 5. [Update the public landing page](#5-update-the-public-landing-page)
 6. [Add a contributor / give someone repo access](#6-add-a-contributor)
 7. [Escalation contacts](#7-escalation-contacts)
-8. [Fix Hermes (desktop agent won't start)](#8-fix-hermes-desktop-agent-wont-start)
+8. [Fix Hermes — and Windows PowerShell that won't start](#8-fix-hermes-desktop-agent-wont-start)
 
 ---
 
@@ -190,20 +190,43 @@ The type initializer for 'System.Net.ServicePointManager' threw an exception.
 
 It retries, auto-repairs, fails the same way, and gives up after three attempts.
 
+**This is also the playbook for "Windows PowerShell won't start" on its own.** Same root cause, same fix — Hermes is just what surfaced it.
+
 ### What's actually wrong
 
 **Windows PowerShell is broken — Hermes is just the app that noticed.**
 
 Hermes starts its backend successfully, then runs `powershell.exe` to read that process's start time so it can remember which process it owns. PowerShell won't start, so that step fails, and Hermes treats the failure as fatal.
 
-The failure happens even with `-NoProfile`, which rules out the PowerShell profile and points at machine-level .NET configuration. Two usual culprits:
+The failure happens even with `-NoProfile`, which rules out the PowerShell profile and points at machine-level .NET configuration. Three usual culprits:
 
-1. A corrupt or truncated `machine.config` (the .NET settings file Windows ships).
-2. A `SchUseStrongCrypto` or `SystemDefaultTlsVersions` registry value written with the wrong type (text instead of number).
+1. A `SchUseStrongCrypto` or `SystemDefaultTlsVersions` registry value written with the wrong type (text instead of number).
+2. A stray `powershell.exe.config`. Windows doesn't ship one — if it's there, some other tool added it, and a malformed one breaks startup exactly this way.
+3. A corrupt or truncated `machine.config` (the .NET settings file Windows ships).
+
+`hermes-fix.bat` tries all three in that order — least invasive first — and stops as soon as PowerShell works again.
 
 If it breaks **more than once**, something is rewriting those settings repeatedly — usually a VPN, antivirus, or corporate proxy tool.
 
-### Fix (about 5 minutes)
+### Fastest path (copy-paste, about 2 minutes)
+
+1. Press **Start**, type `cmd`, right-click **Command Prompt**, choose **Run as administrator**.
+   Do *not* use Windows Terminal or "Terminal (Admin)" — those open PowerShell, which is the broken thing.
+2. Paste this and press Enter:
+
+   ```
+   curl -L -o "%TEMP%\hermes-fix.bat" https://raw.githubusercontent.com/S-U-A-S-Veteran-Crisis-QRF/help/main/tools/hermes/hermes-fix.bat && "%TEMP%\hermes-fix.bat"
+   ```
+
+   If `curl` isn't recognized (older Windows), use this instead:
+
+   ```
+   certutil -urlcache -split -f https://raw.githubusercontent.com/S-U-A-S-Veteran-Crisis-QRF/help/main/tools/hermes/hermes-fix.bat "%TEMP%\hermes-fix.bat" && "%TEMP%\hermes-fix.bat"
+   ```
+
+3. Follow the prompts. Then start Hermes.
+
+### Manual path (about 5 minutes)
 
 The repair scripts are in `tools/hermes/`. They're `.bat` files on purpose: you can't use PowerShell to repair PowerShell.
 
