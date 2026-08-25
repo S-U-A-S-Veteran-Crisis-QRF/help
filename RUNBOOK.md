@@ -207,9 +207,11 @@ If it breaks **more than once**, something is rewriting those settings repeatedl
 
 The repair scripts are in `tools/hermes/`. They're `.bat` files on purpose: you can't use PowerShell to repair PowerShell.
 
-1. Download both files from the repo to the Windows machine's Desktop:
-   - `tools/hermes/hermes-diagnose.bat`
-   - `tools/hermes/hermes-fix.bat`
+1. On the Windows machine, open each link below and save the file to the Desktop
+   (right-click the page → **Save as**, and make sure Windows keeps the `.bat`
+   ending rather than adding `.txt`):
+   - [hermes-diagnose.bat](https://raw.githubusercontent.com/S-U-A-S-Veteran-Crisis-QRF/help/main/tools/hermes/hermes-diagnose.bat)
+   - [hermes-fix.bat](https://raw.githubusercontent.com/S-U-A-S-Veteran-Crisis-QRF/help/main/tools/hermes/hermes-fix.bat)
 2. Double-click **`hermes-diagnose.bat`**. It changes nothing and writes `hermes-report.txt` to the Desktop. It will say whether PowerShell is the problem.
 3. If it confirms PowerShell is broken: right-click **`hermes-fix.bat`** → **Run as administrator**.
 4. The fix script backs everything up to the Desktop, then tries the least invasive repair first (registry values), retests, and only touches `machine.config` if it has to — and only after you type `YES`.
